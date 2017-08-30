@@ -9,16 +9,6 @@
              (org.eclipse.jgit.revwalk RevCommit RevWalk)
              (java.util Date)))
 
-
-(defn- pipeline-version-file
-    []
-    (let [result (io/resource "version.txt")]
-        (if nil?
-            result
-            ;; Pipeline version file is written in upgrade-pipeline.sh during deployment of the pipeline
-            (log/warn "pipeline version file version.txt not found. using empty default"))
-        result))
-
 ;; copied from lambdacd-git.git
 (defn- ^Git git-open [workspace]
     "http://download.eclipse.org/jgit/docs/jgit-2.0.0.201206130900-r/apidocs/org/eclipse/jgit/api/Git.html"
