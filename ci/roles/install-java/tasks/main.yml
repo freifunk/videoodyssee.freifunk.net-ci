@@ -1,0 +1,4 @@
+---
+- name: "install oracle JDK"
+  apt:
+    name: oracle-java8-jdk=8u141
