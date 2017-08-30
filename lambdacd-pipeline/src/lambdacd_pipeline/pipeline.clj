@@ -14,4 +14,7 @@
       manualtrigger/wait-for-manual-trigger
       wait-for-repo))
 
-    ))
+
+  (alias "Hello World"
+         (run hello-world))
+  ))

@@ -33,6 +33,10 @@
   [args]
   (not (dry-run? args)))
 
+(defn hello-world [{cwd :cwd} ctx]
+  (shell/bash ctx cwd "echo hello world")
+  )
+
 ;;
 ;; GIT
 ;;
