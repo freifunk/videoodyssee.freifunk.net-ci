@@ -14,7 +14,7 @@ sudo ansible-galaxy install geerlingguy.nodejs
 ## Provisionieren des CI Server
 
 * Dry Run: `ansible-playbook playbook.yml -i ansible-hosts.txt --check`
-* Provision: `ansible-playbook playbook.yml -i ansible-hosts.txt`
+* Provision: `ansible-playbook playbook.yml --user <username> --ask-sudo-pass -i ansible-hosts.txt`
 
 ## MongoDB UI
 

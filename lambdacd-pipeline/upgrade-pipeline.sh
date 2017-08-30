@@ -9,4 +9,4 @@
 
 git show HEAD --pretty=format:"%h %H" --no-patch > resources/version.txt
 lein uberjar
-ansible-playbook -i ansible-host.txt deploy-lambdacd.yml
+ansible-playbook -i ansible-host.txt --ask-sudo-pass deploy-lambdacd.yml
