@@ -1,0 +1,27 @@
+---
+- hosts: all
+  become: yes
+  become_method: sudo
+
+  tasks:
+    - name: ensure that there is a folder to install the pipeline in
+      file: path=/opt/pipeline state=directory
+
+    - name: ensure that the initial pipeline is present
+      copy: src=target/lambdacd-pipeline-0.1.0-SNAPSHOT-standalone.jar dest=/opt/pipeline/pipeline-0-standalone.jar
+
+    - name: ensure that upstart configuration is present
+      copy: src=lambdacd.service dest=/lib/systemd/system/lambdacd.service mode=755
+
+    - name: restart pipeline
+      systemd: name=lambdacd state=restarted enabled=true
+      async: 45
+      poll: 5
+
+    - name: "wait for the Pipeline to start"
+      action: uri url=http://localhost:8090/lambdaui/lambdaui/index.html
+      register: server_status
+      until: server_status.status | default(0) == 200
+      retries: 20
+      become: no
+

@@ -7,7 +7,7 @@
     required_ansible_version: 2.3
     manala_apt_preferences:
       - node-mongo-express@manala
-    manala_mongo_express_config_template: config/mongo-express-tyr.js
+    manala_mongo_express_config_template: config/mongo-express-freifunk.js
 
     nodejs_install_npm_user: root
 
