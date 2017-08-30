@@ -22,7 +22,9 @@ http://localhost:8090/cctray/pipeline.xml
 
 ### CI Server aktualisieren
 
-`./upgrade-pipeline.sh`
+`./upgrade-pipeline.sh <username>`
+
+username is needed to connect to the server
 
 im Detail:
 

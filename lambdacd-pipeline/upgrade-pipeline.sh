@@ -7,6 +7,8 @@
 #  	exit 1;
 #fi
 
+USER=$1
+
 git show HEAD --pretty=format:"%h %H" --no-patch > resources/version.txt
 lein uberjar
-ansible-playbook -i ansible-host.txt --ask-sudo-pass deploy-lambdacd.yml
+ansible-playbook -i ansible-host.txt --ask-sudo-pass --user $USER deploy-lambdacd.yml
