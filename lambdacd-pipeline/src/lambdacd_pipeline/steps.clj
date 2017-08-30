@@ -12,6 +12,7 @@
 (defn hostname []
   (-> (. InetAddress getLocalHost)
       (.getHostName)))
+(def script-path "src/lambdacd_pipeline/scripts/")
 
 (defn current-timestamp
   "Taken from
@@ -20,27 +21,20 @@
   (quot (System/currentTimeMillis) 1000))
 
 ;;
-;; Dry Run
+;; Steps
 ;;
-
-(defn dry-run?
-  "can be used within steps to check if dry-run is set"
-  [args]
-  (= true (get-in args [:global :dry-run])))
-
-(defn exec-step?
-  "can be used within steps to check if dry-run is set"
-  [args]
-  (not (dry-run? args)))
-
 (defn hello-world [{cwd :cwd} ctx]
   (shell/bash ctx cwd "echo hello world")
+  )
+
+(defn fix-metadata [{cwd :cwd} ctx]
+  (shell/bash ctx cwd (str "ls" cwd " " script-path "fix-metadata.sh /opt/videouploads/TestImage2141.mp4"))
+  ;;(shell/bash ctx cwd (str script-path "/fix-metadata.sh /opt/videouploads/TestImage2141.mp4"))
   )
 
 ;;
 ;; GIT
 ;;
-
 (def repo-uri "https://github.com/freifunk/videoodyssee.freifunk.net-ci.git")
 (def repo-branch "master")
 
