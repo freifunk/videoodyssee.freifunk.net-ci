@@ -36,9 +36,6 @@
 ;;
 ;; Steps
 ;;
-(defn hello-world [{cwd :cwd} ctx]
-  (shell/bash ctx cwd "pwd && ls")
-  )
 
 (defn fix-metadata [args ctx]
   (let [cwd (:cwd args)]

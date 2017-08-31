@@ -19,8 +19,6 @@
             (alias "git"
                    (run
                     clone))
-;;            (alias "Hello World"
-;;                   (run hello-world))
             (alias "Fix Metadata"
                    (run fix-metadata))
   ))))
