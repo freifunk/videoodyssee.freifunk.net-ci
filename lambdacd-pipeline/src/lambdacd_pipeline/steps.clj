@@ -23,7 +23,7 @@
 ;;
 ;; GIT
 ;;
-(def repo-uri "https://github.com/christian-draeger/videoodyssee-test-repo.git")
+(def repo-uri "https://github.com/freifunk/videoodyssee.freifunk.net-ci.git")
 (def repo-branch "master")
 
 ;; https://github.com/flosell/lambdacd-git
@@ -37,7 +37,7 @@
 ;; Steps
 ;;
 (defn hello-world [{cwd :cwd} ctx]
-  (shell/bash ctx cwd "echo hello world")
+  (shell/bash ctx cwd "pwd && ls")
   )
 
 (defn fix-metadata [args ctx]
@@ -45,4 +45,4 @@
 
     (log/info "fix metadata")
     (shell/bash ctx cwd
-                "./scripts/fix-metadata.sh sample.mp4")))
+                "sh /scripts/fix-metadata.sh unprocessed-videos/sample.mp4")))
