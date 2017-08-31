@@ -14,10 +14,13 @@
       manualtrigger/wait-for-manual-trigger
       wait-for-repo))
 
-;;    (alias "workspace"
-;;           (with-workspace
+    (alias "Processing Video"
+           (with-workspace
+            (alias "git"
+                   (run
+                    clone))
 ;;            (alias "Hello World"
 ;;                   (run hello-world))
             (alias "Fix Metadata"
                    (run fix-metadata))
-  ));;))
+  ))))
