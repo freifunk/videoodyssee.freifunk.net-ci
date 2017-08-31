@@ -45,4 +45,4 @@
 
     (log/info "fix metadata")
     (shell/bash ctx cwd
-                "sh /scripts/fix-metadata.sh unprocessed-videos/sample.mp4")))
+                "sh scripts/fix-metadata.sh unprocessed-videos/sample.mp4")))
