@@ -21,8 +21,7 @@
         ;; point this to a particular directory to keep builds around after restarting
         home-dir                (util/create-temp-dir)
 
-        mongodb-cfg             {:uri                                 "mongodb://localhost:27017/lambdacd"
-                                 :hosts                               ["localhost"]
+        mongodb-cfg             {:hosts                               ["localhost"]
                                  :port                                27017
                                  :db                                  "lambdacd"
                                  :col                                 "videoodyssee"
@@ -30,7 +29,7 @@
                                  :ttl                                 7
                                  :mark-running-steps-as               :killed
                                  :pipeline-def                        pipeline
-                                 :persist-the-output-of-running-steps false
+                                 :persist-the-output-of-running-steps true
                                  :use-readable-build-numbers          true}
 
         config                  {:mongodb-cfg mongodb-cfg
@@ -45,7 +44,7 @@
                                                                                   :text "Github Repo"}]}}}
 
         ;; initialize and wire everything together
-        pipeline                (lambdacd/assemble-pipeline pipeline config)
+        pipeline                (lambdacd/assemble-pipeline pipeline config (mongodb-state/new-mongodb-state config))
 
         cctray-pipeline-handler (cctray/cctray-handler-for pipeline)
 
