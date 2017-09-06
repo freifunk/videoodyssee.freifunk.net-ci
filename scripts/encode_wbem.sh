@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SOURCE=$1
-TARGET=$(basename ${SOURCE%.*}).webm
+TARGET=$2
 PASSLOG=/tmp/${TARGET%.*}-webm-1st-pass
 
 if [ ! -e $PASSLOG-0.log ]; then
