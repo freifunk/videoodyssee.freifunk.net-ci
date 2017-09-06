@@ -28,7 +28,7 @@
 
 ;; https://github.com/flosell/lambdacd-git
 (defn wait-for-repo [args ctx]
-  (lambdacd-git/wait-for-git ctx repo-uri :ref (str "refs/heads/" repo-branch)))
+  (lambdacd-git/wait-for-git ctx repo-uri :ms-between-poll (* 60 1000) :ref (str "refs/heads/" repo-branch)))
 
 (defn clone [args ctx]
   (lambdacd-git/clone ctx repo-uri (:revision args) (:cwd args)))
