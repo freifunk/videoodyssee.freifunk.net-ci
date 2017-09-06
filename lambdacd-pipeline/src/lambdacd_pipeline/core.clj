@@ -11,6 +11,7 @@
     [lambdacd-cctray.core :as cctray]
     [clojure.tools.logging :as log]
     [clojure.java.io :as io]
+    [lambdacd-mongodb "2.0.0"]
     [clojure.string :as str])
   (:gen-class))
 
@@ -22,6 +23,7 @@
         home-dir                (util/create-temp-dir)
 
         mongodb-cfg             {:hosts                               ["localhost"]
+                                 :uri                                 "mongodb://localhost:27017/lambdacd"
                                  :port                                27017
                                  :db                                  "lambdacd"
                                  :col                                 "videoodyssee"
@@ -44,7 +46,7 @@
                                                                                   :text "Github Repo"}]}}}
 
         ;; initialize and wire everything together
-        pipeline                (lambdacd/assemble-pipeline pipeline config (mongodb-state/new-mongodb-state config))
+        pipeline                (lambdacd.core/assemble-pipeline pipeline config (mongodb-state/new-mongodb-state config))
 
         cctray-pipeline-handler (cctray/cctray-handler-for pipeline)
 
