@@ -12,6 +12,7 @@
           referenceui-app (reference-ui/ui-for pipeline)]
         (routes
          (GET "/" [] (response/redirect "/lambdaui/lambdaui/index.html"))
+         (core/notifications-for pipeline)
          (GET "/cctray/pipeline.xml" [] cctray)
          (context "/lambdaui" [] lambdaui-app)
          (context "/reference" [] referenceui-app))))
