@@ -7,11 +7,9 @@
     [lambdacd.runners :as runners]
     [lambdacd.util :as util]
     [lambdacd.core :as lambdacd]
-    [lambdacd-mongodb.mongodb-state :as mongodb-state]
     [lambdacd-cctray.core :as cctray]
     [clojure.tools.logging :as log]
     [clojure.java.io :as io]
-    [lambdacd-mongodb "2.0.0"]
     [clojure.string :as str])
   (:gen-class))
 
@@ -22,20 +20,7 @@
         ;; point this to a particular directory to keep builds around after restarting
         home-dir                (util/create-temp-dir)
 
-        mongodb-cfg             {:hosts                               ["localhost"]
-                                 :uri                                 "mongodb://localhost:27017/lambdacd"
-                                 :port                                27017
-                                 :db                                  "lambdacd"
-                                 :col                                 "videoodyssee"
-                                 :max-builds                          10
-                                 :ttl                                 7
-                                 :mark-running-steps-as               :killed
-                                 :pipeline-def                        pipeline
-                                 :persist-the-output-of-running-steps true
-                                 :use-readable-build-numbers          true}
-
-        config                  {:mongodb-cfg mongodb-cfg
-                                 :home-dir    home-dir
+        config                  {:home-dir    home-dir
                                  :name        "Freifunk - Video Odyssee"
 
                                  :ui-config   {:expand-active-default   true
@@ -46,7 +31,7 @@
                                                                                   :text "Github Repo"}]}}}
 
         ;; initialize and wire everything together
-        pipeline                (lambdacd.core/assemble-pipeline pipeline config (mongodb-state/new-mongodb-state config))
+        pipeline                (lambdacd.core/assemble-pipeline pipeline config)
 
         cctray-pipeline-handler (cctray/cctray-handler-for pipeline)
 
