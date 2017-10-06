@@ -43,3 +43,17 @@
     (log/info "fix metadata")
     (shell/bash ctx cwd
                 "sh scripts/fix-metadata.sh unprocessed-videos/sample.mp4")))
+
+(defn encode-wbem [args ctx]
+  (let [cwd (:cwd args)]
+
+    (log/info "encode video to webm")
+    (shell/bash ctx cwd
+                "sh scripts/encode_webm.sh unprocessed-videos/sample.mp4")))
+
+(defn encode-h264 [args ctx]
+  (let [cwd (:cwd args)]
+
+    (log/info "encode video to h264")
+    (shell/bash ctx cwd
+                "sh scripts/encode_h264_AAC_HQ.sh unprocessed-videos/sample.mp4")))
