@@ -14,6 +14,15 @@
       (.getHostName)))
 (def script-path "src/lambdacd_pipeline/scripts/")
 
+(def upload-path "unprocessed-videos")
+
+(def fixed-metadata-path "/srv/fixed-metadata")
+
+(def processed-videos-path "/srv/processed-videos")
+
+(def video-filename "sample.mp4")
+
+
 (defn current-timestamp
   "Taken from
     System/currentTimeMillis."
@@ -42,18 +51,18 @@
 
     (log/info "fix metadata")
     (shell/bash ctx cwd
-                "sh scripts/fix-metadata.sh unprocessed-videos/sample.mp4")))
+                (str "sh scripts/fix-metadata.sh "upload-path "/" video-filename " " fixed-metadata-path "/" video-filename))))
 
 (defn encode-wbem [args ctx]
   (let [cwd (:cwd args)]
 
     (log/info "encode video to webm")
     (shell/bash ctx cwd
-                "sh scripts/encode_webm.sh unprocessed-videos/sample.mp4")))
+                (str "sh scripts/encode_webm.sh " fixed-metadata-path "/" video-filename " " processed-videos-path "/" video-filename ".webm"))))
 
 (defn encode-h264 [args ctx]
   (let [cwd (:cwd args)]
 
     (log/info "encode video to h264")
     (shell/bash ctx cwd
-                "sh scripts/encode_h264_AAC_HQ.sh unprocessed-videos/sample.mp4")))
+                (str "sh scripts/encode_h264_AAC_HQ.sh " fixed-metadata-path "/" video-filename " " processed-videos-path "/" video-filename))))
