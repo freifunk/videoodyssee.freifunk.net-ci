@@ -9,5 +9,6 @@
 
 USER=$1
 
+lein clean
 lein uberjar
 ansible-playbook -i ansible-host.txt --ask-sudo-pass --user $USER deploy-lambdacd.yml
