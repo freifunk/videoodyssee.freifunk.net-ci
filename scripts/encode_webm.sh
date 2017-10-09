@@ -5,8 +5,6 @@ TARGET=$2
 TARGET_BASE=`basename $TARGET`
 PASSLOG=/tmp/${TARGET_BASE%.*}-webm-1st-pass
 
-echo $PASSLOG
-
 if [ ! -e $PASSLOG-0.log ]; then
 ffmpeg  -threads 8 -analyzeduration 40000000 -probesize 100000000 -i $SOURCE \
   -c:v libvpx -g:0 120 -b:v  1200k -qmin:0 11 -qmax:0 51 \
