@@ -7,11 +7,14 @@
     - name: ensure that there is a folder to install the pipeline in
       file: path=/opt/pipeline state=directory
 
-    - name: ensure that there is a folder to install the pipeline in
-      file: path=/srv/fixed-metadata state=directory owner=collins
+    - name: cleanup processing directory
+      file: path=/srv/videoodyssee state=absent
 
-    - name: ensure that there is a folder to install the pipeline in
-      file: path=/srv/processed-videos state=directory owner=collins
+    - name: create folders for processing videos
+      file: path=/srv/videoodyssee/{{ item }} state=directory owner=collins
+      with_items:
+        - fixed-metadata
+        - processed-videos
 
     - name: ensure that the initial pipeline is present
       copy: src=target/lambdacd-pipeline-0.1.0-SNAPSHOT-standalone.jar dest=/opt/pipeline/pipeline-0-standalone.jar

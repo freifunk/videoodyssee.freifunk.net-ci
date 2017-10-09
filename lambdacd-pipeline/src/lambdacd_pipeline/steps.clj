@@ -16,9 +16,9 @@
 
 (def upload-path "unprocessed-videos")
 
-(def fixed-metadata-path "/srv/fixed-metadata")
+(def fixed-metadata-path "/srv/videoodyssee/fixed-metadata")
 
-(def processed-videos-path "/srv/processed-videos")
+(def processed-videos-path "/srv/videoodyssee/processed-videos")
 
 (def video-filename "sample.mp4")
 
@@ -71,24 +71,28 @@
   (let [cwd (:cwd args)]
 
     (log/info "upload to cdn")
+    (shell/bash ctx cwd "exit 0")
     ))
 
 (defn upload-to-youtube [args ctx]
   (let [cwd (:cwd args)]
 
     (log/info "upload to youtube")
+    (shell/bash ctx cwd "exit 0")
     ))
 
 (defn publish-to-voctoweb [args ctx]
   (let [cwd (:cwd args)]
 
     (log/info "publish to voctoweb")
+    (shell/bash ctx cwd "exit 0")
     ))
 
 (defn publish-to-socialmedia [args ctx]
   (let [cwd (:cwd args)]
 
     (log/info "publish to socialmedia")
+    (shell/bash ctx cwd "exit 0")
     ))
 
 (defn cleanup [args ctx]
