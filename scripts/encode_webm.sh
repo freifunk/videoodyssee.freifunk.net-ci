@@ -2,7 +2,10 @@
 
 SOURCE=$1
 TARGET=$2
-PASSLOG=/tmp/${TARGET%.*}-webm-1st-pass
+TARGET_BASE=`basename $TARGET`
+PASSLOG=/tmp/${TARGET_BASE%.*}-webm-1st-pass
+
+echo $PASSLOG
 
 if [ ! -e $PASSLOG-0.log ]; then
 ffmpeg  -threads 8 -analyzeduration 40000000 -probesize 100000000 -i $SOURCE \
