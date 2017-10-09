@@ -11,7 +11,7 @@
       file: path=/srv/fixed-metadata state=directory owner=collins
 
     - name: ensure that there is a folder to install the pipeline in
-      file: path=/srv/processedvideos state=directory owner=collins
+      file: path=/srv/processed-videos state=directory owner=collins
 
     - name: ensure that the initial pipeline is present
       copy: src=target/lambdacd-pipeline-0.1.0-SNAPSHOT-standalone.jar dest=/opt/pipeline/pipeline-0-standalone.jar
