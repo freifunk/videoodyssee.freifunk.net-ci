@@ -66,3 +66,36 @@
     (log/info "encode video to h264")
     (shell/bash ctx cwd
                 (str "sh scripts/encode_h264_AAC_HQ.sh " fixed-metadata-path "/" video-filename " " processed-videos-path "/" video-filename))))
+
+(defn upload-to-cdn [args ctx]
+  (let [cwd (:cwd args)]
+
+    (log/info "upload to cdn")
+    ))
+
+(defn upload-to-youtube [args ctx]
+  (let [cwd (:cwd args)]
+
+    (log/info "upload to youtube")
+    ))
+
+(defn publish-to-voctoweb [args ctx]
+  (let [cwd (:cwd args)]
+
+    (log/info "publish to voctoweb")
+    ))
+
+(defn publish-to-socialmedia [args ctx]
+  (let [cwd (:cwd args)]
+
+    (log/info "publish to socialmedia")
+    ))
+
+(defn cleanup [args ctx]
+  (let [cwd (:cwd args)]
+
+    (log/info "cleanup")
+    (shell/bash ctx cwd (str "rm " fixed-metadata-path "/" video-filename))
+    (shell/bash ctx cwd (str "rm " processed-videos-path "/" video-filename))
+    (shell/bash ctx cwd (str "rm " processed-videos-path "/" video-filename ".webm"))
+    ))

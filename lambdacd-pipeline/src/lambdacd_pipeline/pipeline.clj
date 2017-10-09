@@ -26,4 +26,18 @@
                     (run encode-wbem))
              (alias "Encode H264"
                     (run encode-h264)))
+            (alias "Confirm publishing"
+                   manualtrigger/wait-for-manual-trigger)
+            (in-parallel
+             (alias "Upload to CDN"
+                    (run upload-to-cdn))
+             (alias "Upload to YouTube"
+                    (run upload-to-youtube)))
+            (in-parallel
+             (alias "Publish to VocToWeb"
+                    (run publish-to-voctoweb))
+             (alias "Publish to Social Media"
+                    (run publish-to-socialmedia)))
+            (alias "Cleanup processed files"
+                   (run cleanup))
   ))))
