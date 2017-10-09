@@ -35,3 +35,9 @@ im Detail:
 ### Log output von LambdaCD
 
 * `sudo journalctl -u lambdacd`
+
+### MongoDB aktivieren
+
+* adminUser für MongoDB für die Datenbank lambdacd anlegen
+* config.edn.example in das Arbeitsverzeichnis kopieren (/opt/videoodyssee)
+* Kommentare (#_) entfernen und AL1MobNutzername und Passwort eintragen

@@ -5,6 +5,7 @@ Description=LambdaCD Pipeline
 ExecStart=/usr/bin/java -jar /opt/pipeline/pipeline-0-standalone.jar
 StandardOutput=journal
 User=collins
+WorkingDirectory=/opt/pipeline
 
 [Install]
 WantedBy=multi-user.target

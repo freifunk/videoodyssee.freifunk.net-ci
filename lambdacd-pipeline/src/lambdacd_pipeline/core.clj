@@ -4,14 +4,20 @@
     [lambdacd-pipeline.ui-selection :as ui-selection]
     [lambdacd-pipeline.git :as git]
     [org.httpkit.server :as http-kit]
+    [lambdacd-mongodb.mongodb-state :as mongodb-state]
     [lambdacd.runners :as runners]
     [lambdacd.util :as util]
     [lambdacd.core :as lambdacd]
     [lambdacd-cctray.core :as cctray]
     [clojure.tools.logging :as log]
     [clojure.java.io :as io]
-    [clojure.string :as str])
+    [clojure.string :as str]
+    [outpace.config :refer [defconfig]])
   (:gen-class))
+
+(defconfig ^:required mongodb-user "user")
+(defconfig ^:required mongodb-password)
+(defconfig ^:required mongodb-host "mongodb://localhost:27017/lambdacd")
 
 (defn -main [& args]
   (let [pipeline                pipeline/pipeline-def
@@ -20,7 +26,22 @@
         ;; point this to a particular directory to keep builds around after restarting
         home-dir                (util/create-temp-dir)
 
-        config                  {:home-dir    home-dir
+        mongodb-cfg {:user         mongodb-user
+                     :uri          mongodb-host
+                     :password     mongodb-password
+                     :hosts        ["localhost"]
+                     :port         27017
+                     :db           "lambdacd"
+                     :col          "test-project"
+                     :max-builds   10
+                     :ttl          7
+                     :mark-running-steps-as :killed
+                     :pipeline-def pipeline
+                     :persist-the-output-of-running-steps false
+                     :use-readable-build-numbers true}
+
+        config                  {:mongodb-cfg              mongodb-cfg
+                                 :home-dir    home-dir
                                  :name        "Freifunk - Video Odyssee"
 
                                  :ui-config   {:expand-active-default   true
@@ -31,7 +52,8 @@
                                                                                   :text "Github Repo"}]}}}
 
         ;; initialize and wire everything together
-        pipeline                (lambdacd.core/assemble-pipeline pipeline config)
+        pipeline                (lambdacd.core/assemble-pipeline pipeline config (mongodb-state/new-mongodb-state config))
+
 
         cctray-pipeline-handler (cctray/cctray-handler-for pipeline)
 

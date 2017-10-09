@@ -1,0 +1,11 @@
+{
+
+;; CONFIG ENTRIES:
+
+#_lambdacd-pipeline.core/mongodb-host #_"mongodb://localhost:27017/lambdacd"
+
+#_lambdacd-pipeline.core/mongodb-password #_"password"
+
+#_lambdacd-pipeline.core/mongodb-user #_"user"
+
+}

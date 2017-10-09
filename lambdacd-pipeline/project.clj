@@ -15,10 +15,13 @@
                  [lambdacd-mongodb "2.0.0"]
                  [lambdacd-cctray "0.4.2"]
                  [proto-repl "0.3.1"]
+                 [com.outpace/config "0.10.0"]
                  ]
 
   :exclusions [org.slf4j/slf4j-simple]
 
   :profiles {:uberjar {:aot :all}}
+
+  :aliases {"config" ["run" "-m" "outpace.config.generate"]}
 
   :main lambdacd-pipeline.core)
