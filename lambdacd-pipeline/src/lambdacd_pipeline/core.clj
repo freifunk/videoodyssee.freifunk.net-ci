@@ -16,7 +16,7 @@
   (:gen-class))
 
 (defconfig ^:required mongodb-user "user")
-(defconfig ^:required mongodb-password)
+(defconfig ^:required mongodb-password "secret")
 (defconfig ^:required mongodb-host "mongodb://localhost:27017/lambdacd")
 
 (defn -main [& args]

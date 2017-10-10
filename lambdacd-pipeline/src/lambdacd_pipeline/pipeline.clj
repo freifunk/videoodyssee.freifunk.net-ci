@@ -1,18 +1,20 @@
 (ns lambdacd-pipeline.pipeline
   (:use [lambdacd.steps.control-flow]
-        [lambdacd-pipeline.steps])
+        [lambdacd-pipeline.steps]
+        [lambdacd-pipeline.trigger])
   (:require
-   [lambdacd.steps.manualtrigger :as manualtrigger]
-   [lambdacd-git.core :as lambdacd-git])
+   [lambdacd.steps.manualtrigger :as manualtrigger])
   (:refer-clojure :exclude
                   [alias]))
+
 
 (def pipeline-def
   `((alias
      "triggers"
      (either
       manualtrigger/wait-for-manual-trigger
-      wait-for-repo))
+      wait-for-external-trigger
+      ))
 
     (alias "Processing Video"
            (with-workspace
