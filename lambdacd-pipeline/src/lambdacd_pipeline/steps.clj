@@ -1,8 +1,6 @@
 (ns lambdacd-pipeline.steps
   (:require
    [lambdacd.steps.shell :as shell]
-   [lambdacd-git.core :as lambdacd-git]
-   [lambdacd-pipeline.git :as git]
    [clojure.tools.logging :as log])
   )
 
@@ -15,19 +13,6 @@
 (def processed-videos-path "/srv/videoodyssee/processed-videos")
 
 (def video-filename "sample.mp4")
-
-;;
-;; GIT
-;;
-(def repo-uri "https://github.com/freifunk/videoodyssee.freifunk.net-ci.git")
-(def repo-branch "master")
-
-;; https://github.com/flosell/lambdacd-git
-(defn wait-for-repo [args ctx]
-  (lambdacd-git/wait-for-git ctx repo-uri :ms-between-poll (* 60 1000) :ref (str "refs/heads/" repo-branch)))
-
-(defn clone [args ctx]
-  (lambdacd-git/clone ctx repo-uri (:revision args) (:cwd args)))
 
 ;;
 ;; Steps

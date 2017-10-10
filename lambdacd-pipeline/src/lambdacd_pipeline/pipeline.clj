@@ -18,9 +18,6 @@
 
     (alias "Processing Video"
            (with-workspace
-            (alias "git"
-                   (run
-                    clone))
             (alias "Fix Metadata"
                    (run fix-metadata))
             (in-parallel

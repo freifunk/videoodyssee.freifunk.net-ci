@@ -6,7 +6,6 @@
   :dependencies [[lambdacd "0.13.2"]
                  [lambdaui "0.4.0"]
                  [http-kit "2.2.0"]
-                 [lambdacd-git "0.2.0"]
                  [org.clojure/clojure "1.7.0"]
                  [org.clojure/tools.logging "0.3.1"]
                  [org.slf4j/slf4j-api "1.7.5"]
