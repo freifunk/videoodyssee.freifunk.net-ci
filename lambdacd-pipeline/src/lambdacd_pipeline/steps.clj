@@ -4,14 +4,8 @@
    [lambdacd-git.core :as lambdacd-git]
    [lambdacd-pipeline.git :as git]
    [clojure.tools.logging :as log])
-  (:import (java.net InetAddress)))
+  )
 
-;;
-;; Utils
-;;
-(defn hostname []
-  (-> (. InetAddress getLocalHost)
-      (.getHostName)))
 (def script-path "src/lambdacd_pipeline/scripts/")
 
 (def upload-path "unprocessed-videos")
@@ -21,13 +15,6 @@
 (def processed-videos-path "/srv/videoodyssee/processed-videos")
 
 (def video-filename "sample.mp4")
-
-
-(defn current-timestamp
-  "Taken from
-    System/currentTimeMillis."
-  []
-  (quot (System/currentTimeMillis) 1000))
 
 ;;
 ;; GIT

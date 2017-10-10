@@ -1,9 +1,9 @@
 (ns lambdacd-pipeline.pipeline
   (:use [lambdacd.steps.control-flow]
-        [lambdacd-pipeline.steps]
-        [lambdacd-pipeline.trigger])
+        [lambdacd-pipeline.steps])
   (:require
-   [lambdacd.steps.manualtrigger :as manualtrigger])
+   [lambdacd.steps.manualtrigger :as manualtrigger]
+   [lambdacd-pipeline.trigger :as trigger])
   (:refer-clojure :exclude
                   [alias]))
 
@@ -13,7 +13,7 @@
      "triggers"
      (either
       manualtrigger/wait-for-manual-trigger
-      wait-for-external-trigger
+      trigger/wait-for-external-trigger
       ))
 
     (alias "Processing Video"

@@ -1,6 +1,7 @@
 (ns lambdacd-pipeline.core
   (:require
     [lambdacd-pipeline.pipeline :as pipeline]
+    [lambdacd-pipeline.utils :as utils]
     [lambdacd-pipeline.ui-selection :as ui-selection]
     [lambdacd-pipeline.git :as git]
     [org.httpkit.server :as http-kit]
