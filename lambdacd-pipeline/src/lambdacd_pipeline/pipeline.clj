@@ -25,7 +25,9 @@
              (alias "Encode WBEM"
                     (run encode-wbem))
              (alias "Encode H264"
-                    (run encode-h264)))
+                    (run encode-h264)))))
+    (alias "Publishing Video"
+           (with-workspace
             (alias "Confirm publishing"
                    manualtrigger/wait-for-manual-trigger)
             (in-parallel
