@@ -10,11 +10,13 @@
 (defn notify-pipeline [ctx title]
   (log/info (str "Notify pipeline about video with title: " title))
   (event-bus/publish!! ctx :external-trigger-received {:title title :some-value "blabla"})
-  (-> (ring-response/response title)
-      (ring-response/status 204)))
+  ;; TODO: return current build number and maybe even more data like the request etc
+  (-> (ring-response/response "bla")
+      (ring-response/status 200)))
 
 (defn external-trigger [pipeline]
-  (compojure/GET "/run/:title" [title]
+  ;; TODO: use request body instead of path paramter
+  (compojure/POST "/run/:title" [title]
                  (log/info (str "received external trigger with title: " title))
                  (notify-pipeline (:context pipeline) title)))
 
