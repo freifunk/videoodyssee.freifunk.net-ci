@@ -1,6 +1,7 @@
 (ns lambdacd-pipeline.steps
   (:require
    [lambdacd.steps.shell :as shell]
+   [lambdacd-pipeline.utils :as utils]
    [clojure.tools.logging :as log])
   )
 
@@ -20,7 +21,7 @@
 
 (defn fix-metadata [args ctx]
   (let [cwd (:cwd args)]
-
+    (log/info (str "fix metadata for video: "(utils/get-video-title ctx)))
     (log/info "fix metadata")
     (shell/bash ctx cwd
                 (str "sh scripts/fix-metadata.sh "upload-path "/" video-filename " " fixed-metadata-path "/" video-filename))))
