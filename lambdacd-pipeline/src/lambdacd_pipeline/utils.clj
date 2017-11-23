@@ -32,3 +32,7 @@
     System/currentTimeMillis."
   []
   (quot (System/currentTimeMillis) 1000))
+
+(defn authenticated? [name pass]
+  (and (= name "admin")
+       (= pass "admin")))

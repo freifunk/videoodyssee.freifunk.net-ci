@@ -9,9 +9,6 @@
         [compojure.core :refer [routes GET context]])
     (:gen-class))
 
-
-
-
 (defn ui-routes [pipeline cctray]
     (let [lambdaui-app    (lambdaui/ui-for pipeline :contextPath "/lambdaui")
           referenceui-app (reference-ui/ui-for pipeline)]

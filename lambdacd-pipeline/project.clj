@@ -13,6 +13,7 @@
                  [ch.qos.logback/logback-classic "1.0.13"]
                  [lambdacd-mongodb "2.0.0"]
                  [lambdacd-cctray "0.4.2"]
+                 [ring-basic-authentication "1.0.5"]
                  [proto-repl "0.3.1"]
                  [com.outpace/config "0.10.0"]
                  ]
