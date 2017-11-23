@@ -16,7 +16,7 @@
                  [ring-basic-authentication "1.0.5"]
                  [proto-repl "0.3.1"]
                  [com.outpace/config "0.10.0"]
-                 ]
+                 [org.clojure/data.json "0.2.6"]]
 
   :exclusions [org.slf4j/slf4j-simple]
 

@@ -3,22 +3,25 @@
     [clojure.tools.logging :as log]
     [clojure.core.async :as async]
     [lambdacd.stepsupport.killable :as killable]
+    [lambdacd.presentation.pipeline-state :as pipeline-state]
     [lambdacd.event-bus :as event-bus]
     [ring.util.response :as ring-response]
+    [clojure.data.json :as json]
     [compojure.core :as compojure]))
 
 (defn notify-pipeline [ctx title]
   (log/info (str "Notify pipeline about video with title: " title))
   (event-bus/publish!! ctx :external-trigger-received {:title title :some-value "blabla"})
-  ;; TODO: return current build number and maybe even more data like the request etc
-  (-> (ring-response/response "bla")
-      (ring-response/status 200)))
+  (let [history (pipeline-state/history-for ctx)
+        history-as-json (json/write-str history :escape-unicode true?)]
+    (-> (ring-response/response history-as-json)
+        (ring-response/status 200))))
 
 (defn external-trigger [pipeline]
   ;; TODO: use request body instead of path paramter
   (compojure/POST "/run/:title" [title]
-                 (log/info (str "received external trigger with title: " title))
-                 (notify-pipeline (:context pipeline) title)))
+                  (log/info (str "received external trigger with title: " title))
+                  (notify-pipeline (:context pipeline) title)))
 
 
 (defn- wait-for-trigger-event-while-not-killed [ctx trigger-events]
@@ -43,6 +46,5 @@
         _              (async/>!! result-ch [:out (str "Waiting for trigger...")])
         wait-result    (wait-for-trigger-event-while-not-killed ctx trigger-events)
         ;; TODO: is it ok to close channel if we want receive data from it later on?
-        _              (event-bus/unsubscribe ctx :external-trigger-received subscription)
-        ]
+        _              (event-bus/unsubscribe ctx :external-trigger-received subscription)]
     wait-result))
