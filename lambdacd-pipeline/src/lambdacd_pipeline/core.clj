@@ -37,7 +37,7 @@
                      :db           "lambdacd"
                      :col          "test-project"
                      :max-builds   10
-                     :ttl          7
+                     :ttl          10
                      :mark-running-steps-as :killed
                      :pipeline-def pipeline
                      :persist-the-output-of-running-steps false

@@ -6,6 +6,7 @@
         [ring.util.response :as response]
         [lambdacd-pipeline.pipeline :as pipeline]
         [lambdacd-pipeline.trigger :as trigger]
+        [lambdacd-pipeline.api :as api]
         [compojure.core :refer [routes GET context]])
     (:gen-class))
 
@@ -14,7 +15,9 @@
           referenceui-app (reference-ui/ui-for pipeline)]
         (routes
          (trigger/external-trigger pipeline)
+         (api/api pipeline)
          (GET "/" [] (response/redirect "/lambdaui/lambdaui/index.html"))
          (GET "/cctray/pipeline.xml" [] cctray)
          (context "/lambdaui" [] lambdaui-app)
-         (context "/reference" [] referenceui-app))))
+         (context "/reference" [] referenceui-app)
+         )))
