@@ -11,7 +11,6 @@
     [ring.server.standalone :as ring-server]
     [lambdacd.core :as lambdacd]
     [lambdacd.ui.ui-server :as ui]
-    [lambdacd-cctray.core :as cctray]
     [clojure.tools.logging :as log]
     [clojure.java.io :as io]
     [clojure.string :as str]
@@ -57,14 +56,11 @@
         ;; initialize and wire everything together
         pipeline    (lambdacd.core/assemble-pipeline pipeline config (mongodb-state/new-mongodb-state config))
 
-
-        cctray-pipeline-handler (cctray/cctray-handler-for pipeline)
-
-        ring-handler (ui/ui-for pipeline)
         ;; create a Ring handler for the UI
-        app          (ui-selection/ui-routes pipeline cctray-pipeline-handler)
+        app          (ui-selection/ui-routes pipeline)
 
         login        (wrap-basic-authentication app utils/authenticated?)]
+
     (log/info "LambdaCD Home Directory is" home-dir)
 
     ;; this starts the pipeline and runs one build after the other.

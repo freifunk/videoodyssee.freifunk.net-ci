@@ -108,12 +108,12 @@
     (json/write-str {:overall-build-status overall-build-status
                      :build-number current-build})))
 
-
 ;;;;;;;;; request mapping
 (defn api [pipeline]
-  (GET "/api/:function" [function]
-       (log/info (str "api function '" function "' called"))
-       (fn [& _]
-         {:status  200
-          :headers {"Content-Type" "application/json"}
-          :body    (history pipeline)})))
+  (GET "/rest-api/:endpoint" [endpoint]
+       (log/info (str "api function '" endpoint "' called"))
+         (fn [& _]
+           {:status  200
+            :headers {"Content-Type" "application/json"}
+            :body    (history pipeline)})))
+
