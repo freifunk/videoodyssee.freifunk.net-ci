@@ -68,6 +68,13 @@
     (shell/bash ctx cwd "exit 0")
     ))
 
+(defn create-thumbnail-images [args ctx]
+  (let [cwd (:cwd args)]
+
+    (log/info "create thumbnail images")
+    (shell/bash ctx cwd sh "scripts/ceeate_poster_thumbnails.sh " fixed-metadata-path "/" video-filename " " processed-videos-path "/")
+    ))
+
 (defn cleanup [args ctx]
   (let [cwd (:cwd args)]
 
