@@ -34,7 +34,7 @@
                      :hosts        ["localhost"]
                      :port         27017
                      :db           "lambdacd"
-                     :col          "test-project"
+                     :col          "videoodyssee"
                      :max-builds   10
                      :ttl          10
                      :mark-running-steps-as :killed

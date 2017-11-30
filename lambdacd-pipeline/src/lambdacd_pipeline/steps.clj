@@ -25,7 +25,7 @@
   (let [cwd (:cwd args)]
     (log/info (str "fix metadata for video: "(utils/get-video-title ctx)))
     (log/info "fix metadata")
-    (shell/bash ctx cwd
+    (shell/bash ctx "/opt/pipeline"
                 (str "sh scripts/fix-metadata.sh "upload-path "/" video-filename " " fixed-metadata-path "/" video-filename))))
 
 (defn encode-wbem [args ctx]

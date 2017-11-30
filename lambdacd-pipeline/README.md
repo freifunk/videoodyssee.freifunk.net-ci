@@ -40,4 +40,4 @@ im Detail:
 
 * adminUser für MongoDB für die Datenbank lambdacd anlegen
 * config.edn.example in das Arbeitsverzeichnis kopieren (/opt/videoodyssee)
-* Kommentare (#_) entfernen und AL1MobNutzername und Passwort eintragen
+* Kommentare (#_) entfernen und Nutzername und Passwort eintragen
