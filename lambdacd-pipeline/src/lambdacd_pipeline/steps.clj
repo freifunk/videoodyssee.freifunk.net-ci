@@ -12,7 +12,7 @@
 
 (def upload-path "/srv/uploads")
 
-(def fixed-metadata-path (str "/srv/videoodyssee/"(utils/uuid) "/fixed-metadata"))
+(def video-path (str "/srv/videoodyssee/"(utils/uuid)))
 
 (def processed-videos-path (str "/srv/videoodyssee/"(utils/uuid) "/processed-videos"))
 
@@ -26,25 +26,25 @@
   (let [cwd (:cwd args)]
     (log/info (str "fix metadata for video: "(utils/get-video-title ctx)))
     (log/info (str "fix metadata in path "fixed-metadata-path))
-    (shell/bash ctx cwd (str "mkdir -p " fixed-metadata-path))
+    (shell/bash ctx cwd (str "mkdir -p " video-path "/fixed-metadata"))
     (shell/bash ctx scripts-path
-                (str "sh scripts/fix-metadata.sh "upload-path "/" video-filename " " fixed-metadata-path "/" video-filename))))
+                (str "sh scripts/fix-metadata.sh "upload-path "/" video-filename " " video-path "/fixed-metadata/" video-filename))))
 
 (defn encode-wbem [args ctx]
   (let [cwd (:cwd args)]
 
     (log/info "encode video to webm")
-    (shell/bash ctx cwd (str "mkdir -p " processed-videos-path))
+    (shell/bash ctx cwd (str "mkdir -p " video-path "/processed-video/"))
     (shell/bash ctx scripts-path
-                (str "sh scripts/encode_webm.sh " fixed-metadata-path "/" video-filename " " processed-videos-path "/" video-filename ".webm"))))
+                (str "sh scripts/encode_webm.sh " video-path "/fixed-metadata/" video-filename " " video-path "/processed-video/" video-filename ".webm"))))
 
 (defn encode-h264 [args ctx]
   (let [cwd (:cwd args)]
 
     (log/info "encode video to h264")
-    (shell/bash ctx cwd (str "mkdir -p " processed-videos-path))
+    (shell/bash ctx cwd (str "mkdir -p " video-path "/processed-video/"))
     (shell/bash ctx scripts-path
-                (str "sh scripts/encode_h264_AAC_HQ.sh " fixed-metadata-path "/" video-filename " " processed-videos-path "/" video-filename))))
+                (str "sh scripts/encode_h264_AAC_HQ.sh " video-path "/fixed-metadata/" video-filename " " video-path "/processed-video/" video-filename))))
 
 (defn upload-to-cdn [args ctx]
   (let [cwd (:cwd args)]
@@ -78,14 +78,13 @@
   (let [cwd (:cwd args)]
 
     (log/info "create thumbnail images")
-    (shell/bash ctx cwd (str "mkdir -p " processed-videos-path))
-    (shell/bash ctx scripts-path "sh scripts/create_poster_thumbnails.sh " fixed-metadata-path "/" video-filename " " processed-videos-path "/")
+    (shell/bash ctx cwd (str "mkdir -p " video-path "/processed-video/"))
+    (shell/bash ctx (str scripts-path "sh scripts/create_poster_thumbnails.sh " video-path "/fixed-metadata/" video-filename " " video-path "/processed-video/"))
     ))
 
 (defn cleanup [args ctx]
   (let [cwd (:cwd args)]
 
     (log/info "cleanup")
-    (shell/bash ctx cwd (str "rm -r" fixed-metadata-path))
-    (shell/bash ctx cwd (str "rm -r" processed-videos-path))
+    (shell/bash ctx cwd (str "rm -r" video-path))
     ))
