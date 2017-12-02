@@ -36,3 +36,5 @@
 (defn authenticated? [name pass]
   (and (= name "admin")
        (= pass "admin")))
+
+(defn uuid [] (str (java.util.UUID/randomUUID)))

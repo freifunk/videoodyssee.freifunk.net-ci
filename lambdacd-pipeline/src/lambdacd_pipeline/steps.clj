@@ -10,9 +10,9 @@
 
 (def upload-path "unprocessed-videos")
 
-(def fixed-metadata-path "/srv/videoodyssee/fixed-metadata")
+(def fixed-metadata-path "/srv/videoodyssee/fixed-metadata/" (utils/uuid))
 
-(def processed-videos-path "/srv/videoodyssee/processed-videos")
+(def processed-videos-path "/srv/videoodyssee/processed-videos/" (utils/uuid))
 
 (def video-filename "sample.mp4")
 
@@ -24,6 +24,7 @@
   (let [cwd (:cwd args)]
     (log/info (str "fix metadata for video: "(utils/get-video-title ctx)))
     (log/info "fix metadata")
+    (shell/bash ctx cwd "mkdir -p " fixed-metadata-path)
     (shell/bash ctx scripts-path
                 (str "sh scripts/fix-metadata.sh "upload-path "/" video-filename " " fixed-metadata-path "/" video-filename))))
 
@@ -31,6 +32,7 @@
   (let [cwd (:cwd args)]
 
     (log/info "encode video to webm")
+    (shell/bash ctx cwd "mkdir -p " processed-videos-path)
     (shell/bash ctx scripts-path
                 (str "sh scripts/encode_webm.sh " fixed-metadata-path "/" video-filename " " processed-videos-path "/" video-filename ".webm"))))
 
@@ -38,6 +40,7 @@
   (let [cwd (:cwd args)]
 
     (log/info "encode video to h264")
+    (shell/bash ctx cwd "mkdir -p " processed-videos-path)
     (shell/bash ctx scripts-path
                 (str "sh scripts/encode_h264_AAC_HQ.sh " fixed-metadata-path "/" video-filename " " processed-videos-path "/" video-filename))))
 
@@ -73,6 +76,7 @@
   (let [cwd (:cwd args)]
 
     (log/info "create thumbnail images")
+    (shell/bash ctx cwd "mkdir -p " processed-videos-path)
     (shell/bash ctx scripts-path "sh scripts/ceeate_poster_thumbnails.sh " fixed-metadata-path "/" video-filename " " processed-videos-path "/")
     ))
 
@@ -80,7 +84,6 @@
   (let [cwd (:cwd args)]
 
     (log/info "cleanup")
-    (shell/bash ctx cwd (str "rm " fixed-metadata-path "/" video-filename))
-    (shell/bash ctx cwd (str "rm " processed-videos-path "/" video-filename))
-    (shell/bash ctx cwd (str "rm " processed-videos-path "/" video-filename ".webm"))
+    (shell/bash ctx cwd (str "rm -r" fixed-metadata-path))
+    (shell/bash ctx cwd (str "rm -r" processed-videos-path))
     ))
