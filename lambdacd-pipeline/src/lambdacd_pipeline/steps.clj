@@ -25,7 +25,7 @@
 (defn fix-metadata [args ctx]
   (let [cwd (:cwd args)]
     (log/info (str "fix metadata for video: "(utils/get-video-title ctx)))
-    (log/info (str "fix metadata in path "fixed-metadata-path))
+    (log/info (str "fix metadata in path "video-path))
     (shell/bash ctx cwd (str "mkdir -p " video-path "/fixed-metadata"))
     (shell/bash ctx scripts-path
                 (str "sh scripts/fix-metadata.sh "upload-path "/" video-filename " " video-path "/fixed-metadata/" video-filename))))
