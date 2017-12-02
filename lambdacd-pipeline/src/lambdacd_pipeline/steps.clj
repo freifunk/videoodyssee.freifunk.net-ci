@@ -14,7 +14,7 @@
 
 (def fixed-metadata-path (str "/srv/videoodyssee/"(utils/uuid) "/fixed-metadata"))
 
-(def processed-videos-path (str "/srv/videoodyssee/"(utils/uuid) "/processed-videos/" uuid))
+(def processed-videos-path (str "/srv/videoodyssee/"(utils/uuid) "/processed-videos"))
 
 (def video-filename "sample.mp4")
 
