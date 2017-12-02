@@ -79,7 +79,8 @@
 
     (log/info "create thumbnail images")
     (shell/bash ctx cwd (str "mkdir -p " video-path "/processed-video/"))
-    (shell/bash ctx (str scripts-path "sh scripts/create_poster_thumbnails.sh " video-path "/fixed-metadata/" video-filename " " video-path "/processed-video/"))
+    (shell/bash ctx scripts-path
+                (str"sh scripts/create_poster_thumbnails.sh " video-path "/fixed-metadata/" video-filename " " video-path "/processed-video/"))
     ))
 
 (defn cleanup [args ctx]
