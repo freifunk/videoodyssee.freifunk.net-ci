@@ -87,5 +87,5 @@
   (let [cwd (:cwd args)]
 
     (log/info "cleanup")
-    (shell/bash ctx cwd (str "rm -r" video-path))
+    (shell/bash ctx cwd (str "rm -r " video-path))
     ))
