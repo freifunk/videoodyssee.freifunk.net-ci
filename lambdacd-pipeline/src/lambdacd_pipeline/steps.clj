@@ -7,6 +7,7 @@
   )
 
 (defconfig ^:required scripts-path "/opt/pipeline")
+(defconfig ^:required cdn-url "rsync://yourpersonalexample.net:/module")
 
 (def uuid (utils/uuid))
 
@@ -50,7 +51,8 @@
   (let [cwd (:cwd args)]
 
     (log/info "upload to cdn")
-    (shell/bash ctx cwd "exit 0")
+    (shell/bash ctx scripts-path
+                (str "sh scripts/upload_video_to_cdn.sh " video-path " " cdn-url))
     ))
 
 (defn upload-to-youtube [args ctx]

@@ -4,8 +4,12 @@
 
 #_lambdacd-pipeline.core/mongodb-host #_"mongodb://localhost:27017/lambdacd"
 
-#_lambdacd-pipeline.core/mongodb-password #_"password"
+#_lambdacd-pipeline.core/mongodb-password #_"secret"
 
 #_lambdacd-pipeline.core/mongodb-user #_"user"
+
+#_lambdacd-pipeline.steps/cdn-url #_"rsync://yourpersonalexample.net:/module"
+
+#_lambdacd-pipeline.steps/scripts-path #_"/opt/pipeline"
 
 }
