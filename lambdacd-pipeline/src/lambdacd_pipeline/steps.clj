@@ -8,7 +8,7 @@
 
 (defconfig ^:required scripts-path "/opt/pipeline")
 
-(def upload-path "unprocessed-videos")
+(def upload-path "/srv/uploads")
 
 (def fixed-metadata-path "/srv/videoodyssee/fixed-metadata/" (utils/uuid))
 
