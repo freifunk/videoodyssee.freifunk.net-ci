@@ -2,10 +2,11 @@
   (:require
    [lambdacd.steps.shell :as shell]
    [lambdacd-pipeline.utils :as utils]
+   [outpace.config :refer [defconfig]]
    [clojure.tools.logging :as log])
   )
 
-(def script-path "src/lambdacd_pipeline/scripts/")
+(defconfig ^:required scripts-path "/opt/pipeline")
 
 (def upload-path "unprocessed-videos")
 
@@ -15,8 +16,6 @@
 
 (def video-filename "sample.mp4")
 
-;; TODO: create GUID for build (use for file prefixes and guid for events and recordings
-
 ;;
 ;; Steps
 ;;
@@ -25,21 +24,21 @@
   (let [cwd (:cwd args)]
     (log/info (str "fix metadata for video: "(utils/get-video-title ctx)))
     (log/info "fix metadata")
-    (shell/bash ctx "/opt/pipeline"
+    (shell/bash ctx scripts-path
                 (str "sh scripts/fix-metadata.sh "upload-path "/" video-filename " " fixed-metadata-path "/" video-filename))))
 
 (defn encode-wbem [args ctx]
   (let [cwd (:cwd args)]
 
     (log/info "encode video to webm")
-    (shell/bash ctx cwd
+    (shell/bash ctx scripts-path
                 (str "sh scripts/encode_webm.sh " fixed-metadata-path "/" video-filename " " processed-videos-path "/" video-filename ".webm"))))
 
 (defn encode-h264 [args ctx]
   (let [cwd (:cwd args)]
 
     (log/info "encode video to h264")
-    (shell/bash ctx cwd
+    (shell/bash ctx scripts-path
                 (str "sh scripts/encode_h264_AAC_HQ.sh " fixed-metadata-path "/" video-filename " " processed-videos-path "/" video-filename))))
 
 (defn upload-to-cdn [args ctx]
@@ -74,7 +73,7 @@
   (let [cwd (:cwd args)]
 
     (log/info "create thumbnail images")
-    (shell/bash ctx cwd "sh scripts/ceeate_poster_thumbnails.sh " fixed-metadata-path "/" video-filename " " processed-videos-path "/")
+    (shell/bash ctx scripts-path "sh scripts/ceeate_poster_thumbnails.sh " fixed-metadata-path "/" video-filename " " processed-videos-path "/")
     ))
 
 (defn cleanup [args ctx]
