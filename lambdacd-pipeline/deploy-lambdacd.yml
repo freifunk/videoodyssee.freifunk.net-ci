@@ -22,6 +22,9 @@
     - name: ensure that upstart configuration is present
       copy: src=lambdacd.service dest=/lib/systemd/system/lambdacd.service mode=755
 
+    - name: copy scripts
+      copy: src=../scripts dest=/opt/pipeline/
+
     - name: restart pipeline
       systemd: name=lambdacd state=restarted enabled=true
       async: 45
