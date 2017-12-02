@@ -10,9 +10,9 @@
 
 (def upload-path "/srv/uploads")
 
-(def fixed-metadata-path "/srv/videoodyssee/fixed-metadata/" (utils/uuid))
+(def fixed-metadata-path (str "/srv/videoodyssee/fixed-metadata/" (utils/uuid)))
 
-(def processed-videos-path "/srv/videoodyssee/processed-videos/" (utils/uuid))
+(def processed-videos-path (str "/srv/videoodyssee/processed-videos/" (utils/uuid)))
 
 (def video-filename "sample.mp4")
 
@@ -24,6 +24,7 @@
   (let [cwd (:cwd args)]
     (log/info (str "fix metadata for video: "(utils/get-video-title ctx)))
     (log/info "fix metadata")
+    (log/info (str fixed-metadata-path))
     (shell/bash ctx cwd "mkdir -p " fixed-metadata-path)
     (shell/bash ctx scripts-path
                 (str "sh scripts/fix-metadata.sh "upload-path "/" video-filename " " fixed-metadata-path "/" video-filename))))
