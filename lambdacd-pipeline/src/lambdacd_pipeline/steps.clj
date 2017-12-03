@@ -84,6 +84,7 @@
     (shell/bash ctx cwd "exit 0")
     ))
 
+;; TODO: use this script to get best thumbnails: https://github.com/voc/publishing/blob/master/postprocessing/generate_thumb_autoselect_compatible.sh
 (defn create-thumbnail-images [args ctx]
   (let [cwd (:cwd args)]
 
