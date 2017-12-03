@@ -16,6 +16,4 @@
 
 #_lambdacd-pipeline.steps/scripts-path #_"/opt/pipeline"
 
-#_lambdacd-pipeline.steps/static-url #_"https://your-static-url"
-
 }

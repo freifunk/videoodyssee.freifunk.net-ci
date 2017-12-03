@@ -10,7 +10,6 @@
 (defconfig ^:required cdn-url "rsync://yourpersonalexample.net:/module")
 (defconfig ^:required api-url "https://your-api-url")
 (defconfig ^:required api-key "your-api-key")
-(defconfig ^:required static-url "https://your-static-url")
 
 
 (def upload-path "/srv/uploads")
@@ -73,7 +72,6 @@
                                       video-path "/processed-video/" video-filename " "
                                       api-key " "
                                       api-url " "
-                                      static-url " "
                                       "FFF17 "  ;; TODO: get conference acronym from uploader
                                       "deu "    ;; TODO: get language from uploader
                                       "title "));; TODO: get title from uploader

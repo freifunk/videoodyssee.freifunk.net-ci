@@ -3,17 +3,16 @@
 VIDEOFILE=$1
 API_KEY=$2
 API_URL=$3
-STATIC_URL=$4
-CONFERENCE_ACRONYM=$5
-LANGUAGE=$6
-TITLE=$7
-SUBTITLE=$8
-PERSONS=$9
-TAGS=${10}
-DATE=${11}
-DESCRIPTION=${12}
-LINK=${13}
-RELEASE_DATE=${14}
+CONFERENCE_ACRONYM=$4
+LANGUAGE=$5
+TITLE=$6
+SUBTITLE=$7
+PERSONS=$8
+TAGS=$9
+DATE=${10}
+DESCRIPTION=${11}
+LINK=${12}
+RELEASE_DATE=${13}
 LENGTH=$(printf  "%.0f" "$(ffprobe -v error -select_streams v:0 -show_entries stream=duration -of default=noprint_wrappers=1:nokey=1 "${VIDEOFILE}.mp4")")
 WIDTH=$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of default=noprint_wrappers=1:nokey=1 "${VIDEOFILE}.mp4")
 HEIGHT=$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of default=noprint_wrappers=1:nokey=1 "${VIDEOFILE}.mp4")
@@ -26,8 +25,8 @@ curl -H "CONTENT-TYPE: application/json" -d '{
     "api_key":"'$API_KEY'",
     "acronym":"'$CONFERENCE_ACRONYM'",
     "event":{
-      "poster_url":"'$STATIC_URL'/'$UUID'/'$FILENAME'_preview.jpg",
-      "thumb_url":"'$STATIC_URL'/'$UUID'/'$FILENAME'_thumb.jpg",
+      "poster_filename":"'$UUID'/'$FILENAME'_preview.jpg",
+      "thumb_filename":"'$UUID'/'$FILENAME'_thumb.jpg",
       "guid":"'$UUID'",
       "slug":"'$TITLE_SLUG'",
       "title":"'$TITLE'",
