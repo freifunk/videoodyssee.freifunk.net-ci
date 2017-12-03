@@ -70,7 +70,7 @@
 
     (log/info "publish to voctoweb")
     (shell/bash ctx scripts-path (str "sh scripts/publish_videos_at_voctoweb.sh "
-                                      video-filename " "
+                                      video-path "/" video-filename " "
                                       api-key " "
                                       api-url " "
                                       static-url " "
