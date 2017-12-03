@@ -8,16 +8,19 @@
 
 (defconfig ^:required scripts-path "/opt/pipeline")
 (defconfig ^:required cdn-url "rsync://yourpersonalexample.net:/module")
+(defconfig ^:required api-url "https://your-api-url")
+(defconfig ^:required api-key "your-api-key")
+(defconfig ^:required static-url "https://your-static-url")
 
-(def uuid (utils/uuid))
 
 (def upload-path "/srv/uploads")
 
 (def video-path (str "/srv/videoodyssee/"(utils/uuid)))
 
-(def processed-videos-path (str "/srv/videoodyssee/"(utils/uuid) "/processed-videos"))
+(def video-filename "sample.mp4") ;; TODO: get video filename from uploader
 
-(def video-filename "sample.mp4")
+;; TODO: get these fields from uploader: SUBTITLE, PERSONS, TAGS, DATE, DESCRIPTION, LINK, RELEASE_DATE
+;; TODO: get generate one uuid for one pipeline run
 
 ;;
 ;; Steps
@@ -66,7 +69,14 @@
   (let [cwd (:cwd args)]
 
     (log/info "publish to voctoweb")
-    (shell/bash ctx cwd "exit 0")
+    (shell/bash ctx scripts-path (str "sh scripts/publish_videos_at_voctoweb.sh "
+                                      video-filename " "
+                                      api-key " "
+                                      api-url " "
+                                      static-url " "
+                                      "FFF17 "  ;; TODO: get conference acronym from uploader
+                                      "deu "    ;; TODO: get language from uploader
+                                      "title "));; TODO: get title from uploader
     ))
 
 (defn publish-to-socialmedia [args ctx]

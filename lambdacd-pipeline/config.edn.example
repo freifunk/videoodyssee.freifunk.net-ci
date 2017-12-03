@@ -8,8 +8,14 @@
 
 #_lambdacd-pipeline.core/mongodb-user #_"user"
 
+#_lambdacd-pipeline.steps/api-key #_"your-api-key"
+
+#_lambdacd-pipeline.steps/api-url #_"https://your-api-url"
+
 #_lambdacd-pipeline.steps/cdn-url #_"rsync://yourpersonalexample.net:/module"
 
 #_lambdacd-pipeline.steps/scripts-path #_"/opt/pipeline"
+
+#_lambdacd-pipeline.steps/static-url #_"https://your-static-url"
 
 }
