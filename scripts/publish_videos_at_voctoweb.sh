@@ -43,7 +43,7 @@ curl -H "CONTENT-TYPE: application/json" -d '{
 
 # add recording wbem
 for FORMAT in webm mp4; do
-    FILESIZE=$(stat --printf="%s" "${FILENAME}.${FORMAT}")
+    FILESIZE=$(stat --printf="%s" "${VIDEOFILE}.${FORMAT}")
     curl -H "CONTENT-TYPE: application/json" -d '{
         "api_key":"'$API_KEY'",
         "guid":"'$UUID'",
