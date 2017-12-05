@@ -16,7 +16,7 @@
 
 (def video-path (str "/srv/videoodyssee/"(utils/uuid)))
 
-(def video-filename "sample.mp4") ;; TODO: get video filename from uploader
+(def video-filename "sample2.mp4") ;; TODO: get video filename from uploader
 
 ;; TODO: get these fields from uploader: SUBTITLE, PERSONS, TAGS, DATE, DESCRIPTION, LINK, RELEASE_DATE
 ;; TODO: get generate one uuid for one pipeline run
@@ -74,7 +74,7 @@
                                       api-url " "
                                       "FFF17 "  ;; TODO: get conference acronym from uploader
                                       "deu "    ;; TODO: get language from uploader
-                                      "title "));; TODO: get title from uploader
+                                      "testtitle "));; TODO: get title from uploader
     ))
 
 (defn publish-to-socialmedia [args ctx]
