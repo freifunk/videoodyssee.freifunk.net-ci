@@ -6,22 +6,22 @@
     [lambdacd.presentation.pipeline-state :as pipeline-state]
     [lambdacd.event-bus :as event-bus]
     [ring.util.response :as ring-response]
+    [ring.util.request :as ring-request]
     [clojure.data.json :as json]
     [compojure.core :as compojure]))
 
-(defn notify-pipeline [ctx title]
-  (log/info (str "Notify pipeline about video with title: " title))
-  (event-bus/publish!! ctx :external-trigger-received {:title title :some-value "blabla"})
+(defn notify-pipeline [ctx json-body]
+  (event-bus/publish!! ctx :external-trigger-received {:external-trigger-params json-body})
   (let [history (pipeline-state/history-for ctx)
         history-as-json (json/write-str history :escape-unicode true?)]
     (-> (ring-response/response history-as-json)
         (ring-response/status 200))))
 
 (defn external-trigger [pipeline]
-  ;; TODO: use request body instead of path paramter
-  (compojure/POST "/run/:title" [title]
-                  (log/info (str "received external trigger with title: " title))
-                  (notify-pipeline (:context pipeline) title)))
+  (compojure/POST "/run" request
+                  (let [request-body (slurp (:body request))
+                        json-body (json/read-str request-body)]
+                    (notify-pipeline (:context pipeline) json-body))))
 
 
 (defn- wait-for-trigger-event-while-not-killed [ctx trigger-events]
@@ -33,7 +33,7 @@
       (killable/if-not-killed ctx
                               (do
                                 (if result
-                                  (assoc (:trigger-parameters result) :status :success)
+                                  result
                                   (recur)))))))
 
 (defn ^{:display-type :manual-trigger} wait-for-external-trigger
@@ -45,6 +45,5 @@
         _              (async/>!! result-ch [:status :waiting])
         _              (async/>!! result-ch [:out (str "Waiting for trigger...")])
         wait-result    (wait-for-trigger-event-while-not-killed ctx trigger-events)
-        ;; TODO: is it ok to close channel if we want receive data from it later on?
         _              (event-bus/unsubscribe ctx :external-trigger-received subscription)]
-    wait-result))
+    (merge {:status :success} {:global wait-result})))

@@ -21,12 +21,6 @@
   ([host]
    (.startsWith host "videoodyssee")))
 
-(defn get-video-title [ctx]
-  (let [subscription (event-bus/subscribe ctx :external-trigger-received)
-        payloads     (event-bus/only-payload subscription)]
-    ;; TODO: how to get data from event bus or from async channel
-    (log/info "payload is " (get (async/go [(async/<! payloads)]) :title))))
-
 (defn current-timestamp
   "Taken from
     System/currentTimeMillis."
@@ -38,3 +32,7 @@
        (= pass "admin")))
 
 (defn uuid [] (str (java.util.UUID/randomUUID)))
+
+(defn external-trigger-params [args] (get (get args :global) :external-trigger-params))
+
+(defn get-param [args key] (get (external-trigger-params args) key))

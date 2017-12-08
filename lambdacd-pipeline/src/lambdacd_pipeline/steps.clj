@@ -27,8 +27,7 @@
 
 (defn fix-metadata [args ctx]
   (let [cwd (:cwd args)]
-    (log/info (str "fix metadata for video: "(utils/get-video-title ctx)))
-    (log/info (str "fix metadata in path "video-path))
+    (log/info (str "params: " (utils/get-param args "build-number")))
     (shell/bash ctx cwd (str "mkdir -p " video-path "/fixed-metadata"))
     (shell/bash ctx scripts-path
                 (str "sh scripts/fix-metadata.sh "upload-path "/" video-filename " " video-path "/fixed-metadata/" video-filename))))
@@ -52,7 +51,6 @@
 (defn upload-to-cdn [args ctx]
   (let [cwd (:cwd args)]
 
-    (log/info "upload to cdn")
     (shell/bash ctx scripts-path
                 (str "sh scripts/upload_video_to_cdn.sh " video-path " " cdn-url))
     ))
