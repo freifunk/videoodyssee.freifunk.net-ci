@@ -29,7 +29,8 @@
       "type": "string"
     },
     "language": {
-      "type": "string"
+      "type": "string",
+      "enum": ["eng", "deu", "gsw", "fra", "spa", "jpn", "rus"]
     },
     "link": {
       "type": "string"
