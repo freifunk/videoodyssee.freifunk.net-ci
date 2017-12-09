@@ -2,6 +2,9 @@
   (:require
     [lambdacd.event-bus :as event-bus]
     [clojure.tools.logging :as log]
+    [clojure.java.io :as io]
+    [webjure.json-schema.validator.macro :refer [make-validator]]
+    [cheshire.core :as cheshire]
     [clojure.core.async
      :as    async
      :refer [<! >! <!! timeout chan alt! go]])
@@ -36,3 +39,9 @@
 (defn external-trigger-params [args] (get (get args :global) :external-trigger-params))
 
 (defn get-param [args key] (get (external-trigger-params args) key))
+
+(def upload-schema (io/resource
+                "upload-format.schema.json" ))
+
+(def upload-schema-validator
+  (make-validator (cheshire/parse-string (slurp upload-schema)) {}))

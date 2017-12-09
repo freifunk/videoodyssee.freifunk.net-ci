@@ -8,6 +8,7 @@
     [ring.util.response :as ring-response]
     [ring.util.request :as ring-request]
     [clojure.data.json :as json]
+    [cheshire.core :as cheshire]
     [lambdacd-pipeline.utils :as utils]
     [compojure.core :as compojure]))
 
@@ -22,7 +23,9 @@
   (compojure/POST "/run" request
                   (let [request-body (slurp (:body request))
                         json-body (json/read-str request-body)]
-                    (notify-pipeline (:context pipeline) json-body))))
+                    (if (empty? (utils/upload-schema-validator (cheshire/parse-string request-body)))
+                      (notify-pipeline (:context pipeline) json-body)
+                      (-> (ring-response/response "Invalid request body!") (ring-response/status 400 ))))))
 
 
 (defn- wait-for-trigger-event-while-not-killed [ctx trigger-events]
