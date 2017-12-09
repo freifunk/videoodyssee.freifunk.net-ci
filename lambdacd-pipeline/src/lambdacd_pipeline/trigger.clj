@@ -8,6 +8,7 @@
     [ring.util.response :as ring-response]
     [ring.util.request :as ring-request]
     [clojure.data.json :as json]
+    [lambdacd-pipeline.utils :as utils]
     [compojure.core :as compojure]))
 
 (defn notify-pipeline [ctx json-body]
@@ -46,4 +47,4 @@
         _              (async/>!! result-ch [:out (str "Waiting for trigger...")])
         wait-result    (wait-for-trigger-event-while-not-killed ctx trigger-events)
         _              (event-bus/unsubscribe ctx :external-trigger-received subscription)]
-    (merge {:status :success} {:global wait-result})))
+    (merge {:status :success} {:global (merge wait-result {"uuid" (utils/uuid)})})))
