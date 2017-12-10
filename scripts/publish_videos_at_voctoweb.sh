@@ -22,42 +22,54 @@ HEIGHT=$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of de
 TITLE_SLUG="$(echo -n "${TITLE}" | sed -e 's/[^[:alnum:]]/-/g' | tr -s '-' | tr A-Z a-z)"
 FILENAME=$(basename "${ORIGINAL_FILE%.*}")
 
-# create event
-curl -H "CONTENT-TYPE: application/json" -d '{
-    "api_key":"'$API_KEY'",
-    "acronym":"'$CONFERENCE_ACRONYM'",
+cat << EOF > /tmp/${UUID}-event.json
+{
+    "api_key":"$API_KEY",
+    "acronym":"$CONFERENCE_ACRONYM",
     "event":{
-      "poster_filename":"'$UUID'/'$FILENAME'_preview.jpg",
-      "thumb_filename":"'$UUID'/'$FILENAME'_thumb.jpg",
-      "guid":"'$UUID'",
-      "slug":"'$TITLE_SLUG'",
-      "title":"'$TITLE'",
-      "subtitle": "'$SUBTITLE'",
-      "persons":"'$PERSONS'",
-      "tags":"'$TAGS'",
-      "date":"'$DATE'",
-      "description":"'$DESCRIPTION'",
-      "link":"'$LINK'",
-      "release_date":"'$RELEASE_DATE'",
-      "original_language": "'$LANGUAGE'"
+      "poster_filename":"$UUID/$FILENAME_preview.jpg",
+      "thumb_filename":"$UUID/$FILENAME_thumb.jpg",
+      "guid":"$UUID",
+      "slug":"$TITLE_SLUG",
+      "title":"$TITLE",
+      "subtitle": "$SUBTITLE",
+      "persons":"$PERSONS",
+      "tags":"$TAGS",
+      "date":"$DATE",
+      "description":"$DESCRIPTION",
+      "link":"$LINK",
+      "release_date":"$RELEASE_DATE",
+      "original_language": "$LANGUAGE"
     }
-  }' "${API_URL}/api/events"
+  }
+EOF
+
+
+# create event
+curl -H "CONTENT-TYPE: application/json" -d "@/tmp/${UUID}-event.json" "${API_URL}/api/events"
+
+rm /tmp/${UUID}-event.json
 
 # add recording wbem
 for FORMAT in webm mp4; do
     FILESIZE=$(stat --printf="%s" "${VIDEOFILE}.${FORMAT}")
-    curl -H "CONTENT-TYPE: application/json" -d '{
-        "api_key":"'$API_KEY'",
-        "guid":"'$UUID'",
+    cat << EOF > /tmp/${UUID}-${FORMAT}.json
+        {
+        "api_key":"$API_KEY",
+        "guid":"$UUID",
         "recording":{
-          "filename":"'"${FILENAME}.${FORMAT}"'",
-          "folder":"'$UUID'",
-          "mime_type":"video/'$FORMAT'",
-          "language":"'$LANGUAGE'",
-          "size":'$FILESIZE',
-          "length":'$LENGTH',
-          "width":'$WIDTH',
-          "height":'$HEIGHT'
+          "filename":"${FILENAME}.${FORMAT}",
+          "folder":"$UUID",
+          "mime_type":"video/$FORMAT",
+          "language":"$LANGUAGE",
+          "size":$FILESIZE,
+          "length":$LENGTH,
+          "width":$WIDTH,
+          "height":$HEIGHT
           }
-      }' "${API_URL}/api/recordings";
+      }
+EOF
+    curl -H "CONTENT-TYPE: application/json" -d "@/tmp/${UUID}-${FORMAT}.json" "${API_URL}/api/recordings";
+
+    #rm /tmp/${UUID}-${FORMAT}.json
 done
