@@ -3,7 +3,7 @@
    [lambdacd.steps.shell :as shell]
    [lambdacd-pipeline.utils :as utils]
    [outpace.config :refer [defconfig]]
-   [clojure.data.json :as json]
+
    [clojure.tools.logging :as log])
   )
 
@@ -15,8 +15,6 @@
 
 (def video-base-path "/srv/videoodyssee/")
 
-;; TODO: get these fields from uploader: PERSONS, TAGS, DATE, DESCRIPTION, LINK, RELEASE_DATE
-
 ;;
 ;; Steps
 ;;
@@ -24,6 +22,7 @@
 (defn fix-metadata [args ctx]
   (let [cwd (:cwd args)]
     (log/info (str "uuid: " (utils/get-uuid args)))
+    (log/info (str "persons: "))
     (def video-path (str video-base-path (utils/get-uuid args)))
     (shell/bash ctx cwd (str "mkdir -p " video-path "/fixed-metadata"))
     (shell/bash ctx scripts-path
@@ -83,7 +82,13 @@
                                       (utils/get-param args "conferenceAcronym") " "
                                       (utils/get-param args "language") " "
                                       "\""(utils/get-param args "title") "\" "
-                                      "\""(utils/get-param args "subtitle") "\" "))
+                                      "\""(utils/get-param args "subtitle") "\" "
+                                      (utils/vector-to-json-array (utils/get-param args "persons")) " "
+                                      (utils/vector-to-json-array (utils/get-param args "tags")) " "
+                                      "\""(utils/get-param args "date") "\" "
+                                      "\""(utils/get-param args "description") "\" "
+                                      (utils/get-param args "link") " "
+                                      "\""(utils/get-param args "releaseDate") "\" "))
     ))
 
 (defn publish-to-socialmedia [args ctx]

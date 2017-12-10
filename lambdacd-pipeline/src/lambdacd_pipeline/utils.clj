@@ -47,3 +47,6 @@
 
 (def upload-schema-validator
   (make-validator (cheshire/parse-string (slurp upload-schema)) {}))
+
+(defn vector-to-json-array [vector]
+  (str "[\""(clojure.string/join  "\",\""vector) "\"]"))
