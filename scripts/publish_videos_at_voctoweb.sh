@@ -1,24 +1,26 @@
 #!/usr/bin/env bash
 
-VIDEOFILE=$1
-API_KEY=$2
-API_URL=$3
-CONFERENCE_ACRONYM=$4
-LANGUAGE=$5
-TITLE=$6
-SUBTITLE=$7
-PERSONS=$8
-TAGS=$9
-DATE=${10}
-DESCRIPTION=${11}
-LINK=${12}
-RELEASE_DATE=${13}
+VIDEOPATH="$1"
+ORIGINAL_FILE="$2"
+UUID="$3"
+API_KEY="$4"
+API_URL=$5
+CONFERENCE_ACRONYM=$6
+LANGUAGE=$7
+TITLE=$8
+SUBTITLE=$9
+PERSONS=${10}
+TAGS=${11}
+DATE=${12}
+DESCRIPTION=${13}
+LINK=${14}
+RELEASE_DATE=${15}
+VIDEOFILE=${VIDEOPATH}/$(basename "${ORIGINAL_FILE%.*}")
 LENGTH=$(printf  "%.0f" "$(ffprobe -v error -select_streams v:0 -show_entries stream=duration -of default=noprint_wrappers=1:nokey=1 "${VIDEOFILE}.mp4")")
 WIDTH=$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of default=noprint_wrappers=1:nokey=1 "${VIDEOFILE}.mp4")
 HEIGHT=$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of default=noprint_wrappers=1:nokey=1 "${VIDEOFILE}.mp4")
 TITLE_SLUG="$(echo -n "${TITLE}" | sed -e 's/[^[:alnum:]]/-/g' | tr -s '-' | tr A-Z a-z)"
-UUID=$(basename "$(dirname "$(dirname "${VIDEOFILE}.mp4")")")
-FILENAME=$(basename "$VIDEOFILE")
+FILENAME=$(basename "${ORIGINAL_FILE%.*}")
 
 # create event
 curl -H "CONTENT-TYPE: application/json" -d '{

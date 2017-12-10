@@ -40,6 +40,8 @@
 
 (defn get-param [args key] (get (external-trigger-params args) key))
 
+(defn get-uuid [args] (get (get args :global) "uuid"))
+
 (def upload-schema (io/resource
                 "upload-format.schema.json" ))
 

@@ -2,6 +2,6 @@
 
 VIDEO_DIR=$1
 URL=$2
-UUID=$(basename "$VIDEO_DIR")
+UUID=$3
 
 rsync -a ${VIDEO_DIR}/processed-video/ ${URL}/${UUID}

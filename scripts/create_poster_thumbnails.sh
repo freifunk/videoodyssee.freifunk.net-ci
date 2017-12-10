@@ -6,14 +6,16 @@ set -e
 BASEDIR=$(dirname $0)
 INTERVAL=180
 
-file="$1"
+inputdir="$1"
+originalfile="$2"
 # target output directory, optional
-outdir="$2"
+outdir="$3"
 # thumbnail output filename, relative to outdir, optional
-thumb_filename="$3"
+thumb_filename="$4"
 # poster image output filename, relative to outdir, optional
-poster_filename="$4"
+poster_filename="$5"
 
+file=${inputdir}/$(basename "${originalfile%.*}").mp4
 
 LENGTH=$(ffprobe -loglevel quiet -print_format default -show_format "$file" | grep duration= | sed -e 's/duration=\([[:digit:]]*\).*/\1/g')
 
@@ -26,8 +28,8 @@ elif [ -z "$outdir" ]; then
   outjpg=${file%.*}_thumb.jpg
   outjpg_preview=${file%.*}_preview.jpg
 else
-  outjpg=${outdir}/$(basename "${file}_thumb.jpg")
-  outjpg_preview=${outdir}/$(basename "${file}_preview.jpg") # TODO: use ${file%.*} to remove file extension
+  outjpg=${outdir}/$(basename "${file%.*}_thumb.jpg")
+  outjpg_preview=${outdir}/$(basename "${file%.*}_preview.jpg")
 fi
 
 # Make sure potential subdirs in the image directory also exist
@@ -41,7 +43,7 @@ mkdir -p `dirname "$outjpg_preview"`
 # also, use higher resolution sampling at the beginning, as there's usually some interesting stuff there
 
 
-for POS in 20 30 40 $(seq 15 $INTERVAL $[ $LENGTH - 60 ])
+for POS in 20 30 40 $(seq 15 $INTERVAL $(( $LENGTH - 60 )))
 do
 	ffmpeg -loglevel error -ss $POS -i "$file"  -an -r 1 -filter:v 'scale=sar*iw:ih' -vframes 1 -f image2 -pix_fmt yuv420p -vcodec png -y "$TMPDIR/$POS.png"
 done
