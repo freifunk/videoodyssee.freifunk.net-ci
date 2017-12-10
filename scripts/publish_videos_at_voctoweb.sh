@@ -46,7 +46,12 @@ EOF
 
 
 # create event
-curl -H "CONTENT-TYPE: application/json" -d "@/tmp/${UUID}-event.json" "${API_URL}/api/events"
+response_code=$(curl --write-out %{http_code} --silent --output /dev/null -H "CONTENT-TYPE: application/json" -d "@/tmp/${UUID}-event.json" "${API_URL}/api/events")
+
+if [$response_code -ge 300];
+    echo "Error sending event, status code: $response_code"
+    exit 1
+fi
 
 rm /tmp/${UUID}-event.json
 
@@ -69,7 +74,10 @@ for FORMAT in webm mp4; do
           }
       }
 EOF
-    curl -H "CONTENT-TYPE: application/json" -d "@/tmp/${UUID}-${FORMAT}.json" "${API_URL}/api/recordings";
-
+    response_code=$(curl --write-out %{http_code} --silent --output /dev/null -H "CONTENT-TYPE: application/json" -d "@/tmp/${UUID}-${FORMAT}.json" "${API_URL}/api/recordings")
+    if [$response_code -ge 300];
+    echo "Error sending event, status code: $response_code"
+    exit 1
+fi
     rm /tmp/${UUID}-${FORMAT}.json
 done
