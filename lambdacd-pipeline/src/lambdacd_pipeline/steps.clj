@@ -75,7 +75,7 @@
     (def video-path (str video-base-path (utils/get-uuid args)))
     (shell/bash ctx scripts-path (str "sh scripts/publish_videos_at_voctoweb.sh "
                                       video-path "/processed-video "
-                                      (utils/get-param args "videoFilePath")
+                                      (utils/get-param args "videoFilePath") " "
                                       (utils/get-uuid args) " "
                                       api-key " "
                                       api-url " "
