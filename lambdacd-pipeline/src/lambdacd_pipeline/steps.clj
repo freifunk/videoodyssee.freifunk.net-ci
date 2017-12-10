@@ -3,6 +3,7 @@
    [lambdacd.steps.shell :as shell]
    [lambdacd-pipeline.utils :as utils]
    [outpace.config :refer [defconfig]]
+   [clojure.data.json :as json]
    [clojure.tools.logging :as log])
   )
 
@@ -14,7 +15,7 @@
 
 (def video-base-path "/srv/videoodyssee/")
 
-;; TODO: get these fields from uploader: SUBTITLE, PERSONS, TAGS, DATE, DESCRIPTION, LINK, RELEASE_DATE
+;; TODO: get these fields from uploader: PERSONS, TAGS, DATE, DESCRIPTION, LINK, RELEASE_DATE
 
 ;;
 ;; Steps
