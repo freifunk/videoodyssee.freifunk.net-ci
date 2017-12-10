@@ -71,5 +71,5 @@ for FORMAT in webm mp4; do
 EOF
     curl -H "CONTENT-TYPE: application/json" -d "@/tmp/${UUID}-${FORMAT}.json" "${API_URL}/api/recordings";
 
-    #rm /tmp/${UUID}-${FORMAT}.json
+    rm /tmp/${UUID}-${FORMAT}.json
 done
