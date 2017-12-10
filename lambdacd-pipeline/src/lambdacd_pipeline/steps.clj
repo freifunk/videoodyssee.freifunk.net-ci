@@ -75,14 +75,14 @@
     (def video-path (str video-base-path (utils/get-uuid args)))
     (shell/bash ctx scripts-path (str "sh scripts/publish_videos_at_voctoweb.sh "
                                       video-path "/processed-video "
-                                      (utils/get-param args "videoFilePath") " "
+                                      "\""(utils/get-param args "videoFilePath") "\" "
                                       (utils/get-uuid args) " "
                                       api-key " "
                                       api-url " "
-                                      (utils/get-param args "conferenceAcronyme") " "
+                                      (utils/get-param args "conferenceAcronym") " "
                                       (utils/get-param args "language") " "
-                                      (utils/get-param args "title") " "
-                                      (utils/get-param args "subtitle") " "))
+                                      "\""(utils/get-param args "title") "\" "
+                                      "\""(utils/get-param args "subtitle") "\" "))
     ))
 
 (defn publish-to-socialmedia [args ctx]
