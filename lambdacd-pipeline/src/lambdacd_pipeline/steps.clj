@@ -22,7 +22,6 @@
 (defn fix-metadata [args ctx]
   (let [cwd (:cwd args)]
     (log/info (str "uuid: " (utils/get-uuid args)))
-    (log/info (str "persons: "))
     (def video-path (str video-base-path (utils/get-uuid args)))
     (shell/bash ctx cwd (str "mkdir -p " video-path "/fixed-metadata"))
     (shell/bash ctx scripts-path
