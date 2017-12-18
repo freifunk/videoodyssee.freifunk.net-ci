@@ -2,6 +2,7 @@
   (:require
     [lambdacd-pipeline.pipeline :as pipeline]
     [lambdacd-pipeline.utils :as utils]
+    [lambdacd-pipeline.auth :as auth]
     [lambdacd-pipeline.ui-selection :as ui-selection]
     [org.httpkit.server :as http-kit]
     [lambdacd-mongodb.mongodb-state :as mongodb-state]
@@ -59,7 +60,7 @@
         ;; create a Ring handler for the UI
         app          (ui-selection/ui-routes pipeline)
 
-        login        (wrap-basic-authentication app utils/authenticated?)]
+        login        (wrap-basic-authentication app auth/is-valid-user?)]
 
     (log/info "LambdaCD Home Directory is" home-dir)
 

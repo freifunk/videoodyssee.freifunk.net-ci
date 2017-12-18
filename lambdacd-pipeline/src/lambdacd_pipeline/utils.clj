@@ -30,10 +30,6 @@
   []
   (quot (System/currentTimeMillis) 1000))
 
-(defn authenticated? [name pass]
-  (and (= name "admin")
-       (= pass "admin")))
-
 (defn uuid [] (str (java.util.UUID/randomUUID)))
 
 (defn external-trigger-params [args] (get (get args :global) :external-trigger-params))

@@ -41,3 +41,9 @@ im Detail:
 * adminUser für MongoDB für die Datenbank lambdacd anlegen
 * config.edn.example in das Arbeitsverzeichnis kopieren (/opt/videoodyssee)
 * Kommentare (#_) entfernen und Nutzername und Passwort eintragen
+
+### Authentifizierung
+
+* Im Arbeitsverzeichnis eine Passwortdatei anlegen: ```htpasswd -cB videoodyssee.user <username>```
+* Weitere Benutzer hinzufügen ```htpasswd -B videoodyssee.user <username>```
+* Wenn die Datei nicht existiert: User: ```admin```, Password: ```admin``` 
