@@ -112,8 +112,9 @@
 (defn api [pipeline]
   (GET "/rest-api/:endpoint" [endpoint]
        (log/info (str "api function '" endpoint "' called"))
-         (fn [& _]
+       (fn [& _]
            {:status  200
             :headers {"Content-Type" "application/json"}
-            :body    (history pipeline)})))
+            :body    ((resolve (symbol "lambdacd-pipeline.api"endpoint)) pipeline)
+            })))
 
