@@ -31,7 +31,7 @@
       poll: 5
 
     - name: "wait for the Pipeline to start"
-      action: uri url=http://localhost:8090/lambdaui/lambdaui/index.html
+      action: uri url=http://localhost:8090/status
       register: server_status
       until: server_status.status | default(0) == 200
       retries: 20
