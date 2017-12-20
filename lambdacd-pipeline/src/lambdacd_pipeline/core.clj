@@ -58,18 +58,16 @@
         pipeline    (lambdacd.core/assemble-pipeline pipeline config (mongodb-state/new-mongodb-state config))
 
         ;; create a Ring handler for the UI
-        app          (ui-selection/ui-routes pipeline)
-
-        login        (wrap-basic-authentication app auth/is-valid-user?)]
+        app          (ui-selection/ui-routes pipeline)]
 
     (log/info "LambdaCD Home Directory is" home-dir)
 
     ;; this starts the pipeline and runs one build after the other.
     ;; there are other runners and you can define your own as well.
-    (runners/start-one-run-after-another pipeline)
+    (runners/start-new-run-after-first-step-finished pipeline)
 
     ;; start the webserver to serve the UI
     ;; use 'app' as handler to deactivate login
-    (http-kit/run-server login
+    (http-kit/run-server app
                          {:open-browser? false
                           :port          8090})))
