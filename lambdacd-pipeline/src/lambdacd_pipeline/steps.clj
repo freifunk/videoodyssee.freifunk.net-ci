@@ -25,7 +25,7 @@
     (def video-path (str video-base-path (utils/get-uuid args)))
     (shell/bash ctx cwd (str "mkdir -p " video-path "/fixed-metadata"))
     (shell/bash ctx scripts-path
-                (str "sh scripts/fix-metadata.sh " (utils/get-param args "videoFilePath") " " video-path "/fixed-metadata"))))
+                (str "sh scripts/fix-metadata.sh \"" (utils/get-param args "videoFilePath") "\" " video-path "/fixed-metadata"))))
 
 (defn encode-wbem [args ctx]
   (let [cwd (:cwd args)]
