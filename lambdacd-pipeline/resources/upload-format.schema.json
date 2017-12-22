@@ -13,6 +13,9 @@
     "title": {
       "type": "string"
     },
+    "slug": {
+      "type": "string"
+    },
     "subtitle": {
       "type": "string"
     },
@@ -55,6 +58,7 @@
     "name",
     "email",
     "title",
+    "slug",
     "videoFilePath",
     "conferenceAcronym",
     "language"
