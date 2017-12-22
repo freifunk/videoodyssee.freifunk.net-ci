@@ -35,7 +35,7 @@
     (shell/bash ctx cwd (str "mkdir -p " video-path "/processed-video/"))
     (shell/bash ctx scripts-path
                 (str "sh scripts/encode_webm.sh " video-path "/fixed-metadata "
-                     (utils/get-param args "videoFilePath") " "
+                     \"(utils/get-param args "videoFilePath")\" " "
                      video-path "/processed-video"))))
 
 (defn encode-h264 [args ctx]
@@ -46,7 +46,7 @@
     (shell/bash ctx cwd (str "mkdir -p " video-path "/processed-video/"))
     (shell/bash ctx scripts-path
                 (str "sh scripts/encode_h264_AAC_HQ.sh " video-path "/fixed-metadata "
-                     (utils/get-param args "videoFilePath") " "
+                     \"(utils/get-param args "videoFilePath")\" " "
                      video-path "/processed-video "
                      (utils/get-param args "title")))))
 
@@ -105,7 +105,7 @@
     (shell/bash ctx cwd (str "mkdir -p " video-path "/processed-video/"))
     (shell/bash ctx scripts-path
                 (str"sh scripts/create_poster_thumbnails.sh " video-path "/fixed-metadata "
-                    (utils/get-param args "videoFilePath") " "
+                    \"(utils/get-param args "videoFilePath")\" " "
                     video-path "/processed-video"))
     ))
 
