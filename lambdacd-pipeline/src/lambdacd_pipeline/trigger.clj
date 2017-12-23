@@ -8,15 +8,16 @@
     [ring.util.response :as ring-response]
     [ring.util.request :as ring-request]
     [clojure.data.json :as json]
+    [lambdacd.state.core :as state]
     [cheshire.core :as cheshire]
     [lambdacd-pipeline.utils :as utils]
     [compojure.core :as compojure]))
 
 (defn notify-pipeline [ctx json-body]
   (event-bus/publish!! ctx :external-trigger-received {:external-trigger-params json-body})
-  (let [history (pipeline-state/history-for ctx)
-        history-as-json (json/write-str history :escape-unicode true?)]
-    (-> (ring-response/response history-as-json)
+  (let [next-build-number    (state/next-build-number ctx)
+        build-number-as-json (json/write-str {:next-build-number next-build-number} :escape-unicode true?)]
+  (-> (ring-response/response build-number-as-json)
         (ring-response/status 200))))
 
 (defn external-trigger [pipeline]
