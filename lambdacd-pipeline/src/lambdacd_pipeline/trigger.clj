@@ -15,8 +15,8 @@
 
 (defn notify-pipeline [ctx json-body]
   (event-bus/publish!! ctx :external-trigger-received {:external-trigger-params json-body})
-  (let [next-build-number    (state/next-build-number ctx)
-        build-number-as-json (json/write-str {:next-build-number next-build-number} :escape-unicode true?)]
+  (let [current-build-number    (unchecked-subtract (state/next-build-number ctx) 1)
+        build-number-as-json (json/write-str {:build-number current-build-number} :escape-unicode true?)]
   (-> (ring-response/response build-number-as-json)
         (ring-response/status 200))))
 
