@@ -75,9 +75,9 @@
     (log/info "publish to voctoweb")
     (def video-path (str video-base-path (utils/get-uuid args)))
     (def recordings {})
-    (def created-event @(httpclient/post api-url
+    (def created-event @(httpclient/post (str api-url "/api/events")
      {:body (json/json-str {
-                             :api_key (str api-url "/api/events"),
+                             :api_key api-key,
                              :acronym (utils/get-param args "conferenceAcronym"),
                              :event {
                                       :poster_filename (str (utils/get-uuid args)"/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) "_preview.jpg"),
@@ -96,6 +96,8 @@
                              }} :escape-slash false)
       :headers {"Content-Type" "application/json"}}
                      ))
+
+    (log/info created-event)
 
     (if (>= (get created-event :status) 300)
       {:status :failure :out (str "Result create event - Status:"(get created-event :status) ", " (get created-event :body))}
@@ -118,6 +120,7 @@
                                                          } :escape-slash false )
                                   :headers {"Content-Type" "application/json"}}))
         (conj recordings {(keyword format) created-recording})
+        (log/info created-recording)
         )
       )
     (log/info (str recordings))
