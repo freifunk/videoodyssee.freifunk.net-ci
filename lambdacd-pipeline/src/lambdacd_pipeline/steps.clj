@@ -2,8 +2,10 @@
   (:require
    [lambdacd.steps.shell :as shell]
    [lambdacd-pipeline.utils :as utils]
+   [clojure.data.json :as json]
+   [clojure.java.io :as io]
+   [org.httpkit.client :as httpclient]
    [outpace.config :refer [defconfig]]
-
    [clojure.tools.logging :as log])
   )
 
@@ -72,23 +74,54 @@
 
     (log/info "publish to voctoweb")
     (def video-path (str video-base-path (utils/get-uuid args)))
-    (shell/bash ctx scripts-path (str "sh scripts/publish_videos_at_voctoweb.sh "
-                                      video-path "/processed-video "
-                                      "\""(utils/get-param args "videoFilePath") "\" "
-                                      (utils/get-uuid args) " "
-                                      api-key " "
-                                      api-url " "
-                                      (utils/get-param args "conferenceAcronym") " "
-                                      (utils/get-param args "language") " "
-                                      "\""(utils/get-param args "title") "\" "
-                                      "\""(utils/get-param args "subtitle") "\" "
-                                      (utils/vector-to-json-array (utils/get-param args "persons")) " "
-                                      (utils/vector-to-json-array (utils/get-param args "tags")) " "
-                                      "\""(utils/get-param args "date") "\" "
-                                      "\""(utils/get-param args "description") "\" "
-                                      (utils/get-param args "link") " "
-                                      "\""(utils/get-param args "releaseDate") "\" "))
-    ))
+    (def recordings {})
+    (def created-event @(httpclient/post api-url
+     {:body (json/json-str {
+                             :api_key (str api-url "/api/events"),
+                             :acronym (utils/get-param args "conferenceAcronym"),
+                             :event {
+                                      :poster_filename (str (utils/get-uuid args)"/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) "_preview.jpg"),
+                                      :thumb_filename (str (utils/get-uuid args)"/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) "_thumb.jpg"),
+                                      :guid (utils/get-uuid args),
+                                      :slug (utils/get-param args "slug"),
+                                      :title (utils/get-param args "title"),
+                                      :subtitle (utils/get-param args "subtitle"),
+                                      :persons (utils/get-param args "persons"),
+                                      :tags (utils/get-param args "tags"),
+                                      :date (utils/get-param args "date"),
+                                      :description (utils/get-param args "description"),
+                                      :link (utils/get-param args "link"),
+                                      :release_date (utils/get-param args "releaseDate"),
+                                      :original_language (utils/get-param args "language")
+                             }} :escape-slash false)
+      :headers {"Content-Type" "application/json"}}
+                     ))
+
+    (if (>= (get created-event :status) 300)
+      {:status :failure :out (str "Result create event - Status:"(get created-event :status) ", " (get created-event :body))}
+      (doseq [format ["mp4" "webm"]]
+        (def filename (str video-path "/processed-video/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) "." format))
+        (def created-recording @(httpclient/post (str api-url "/api/recordings")
+                                 {:body (json/json-str {
+                                                         :api_key api-key,
+                                                         :guid (utils/get-uuid args),
+                                                         :recording {
+                                                                      :filename (str (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) "." format),
+                                                                      :folder (utils/get-uuid args),
+                                                                      :mime_type (str "video/" format),
+                                                                      :language (utils/get-param args "language"),
+                                                                      :size (utils/file-size-in-mb filename),
+                                                                      :length (utils/ffmpeg-get-length cwd ctx filename),
+                                                                      :width (utils/ffmpeg-get-width cwd ctx filename),
+                                                                      :height (utils/ffmpeg-get-height cwd ctx filename)
+                                                                      }
+                                                         } :escape-slash false )
+                                  :headers {"Content-Type" "application/json"}}))
+        (conj recordings {(keyword format) created-recording})
+        )
+      )
+    (log/info (str recordings))
+    {:status :success}))
 
 (defn publish-to-socialmedia [args ctx]
   (let [cwd (:cwd args)]
