@@ -42,5 +42,7 @@
                                publish-recordings))
        (alias "Publish to Social Media"
               (run publish-to-socialmedia))
+       (alias "send mail to submitter"
+              (run send-message-to-submitter))
        (alias "Cleanup processed files"
              (run cleanup))))))

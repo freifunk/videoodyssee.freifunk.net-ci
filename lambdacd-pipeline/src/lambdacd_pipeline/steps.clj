@@ -81,8 +81,19 @@
                        :to admin-recipients
                        :subject "New video ready to be published"
                        :body (str "Hi! There's a new video waiting to be published. "
-                            "The title is " (utils/get-param args "title") "."
+                            "The title is \"" (utils/get-param args "title") "\"."
                                   "Submitted by " (utils/get-param args "name ") " email: " (utils/get-param args "email"))
+                       })
+  {:status :success}
+  )
+
+(defn send-message-to-submitter [args ctx]
+  (mail/send-message {
+                       :from sender-address
+                       :to (utils/get-param args "email")
+                       :subject "Your video is published"
+                       :body (str "Hi "(utils/get-param args "name ") "! Your video is now published at https://media.freifunk.net. "
+                                  "The title is \"" (utils/get-param args "title") "\".")
                        })
   {:status :success}
   )
