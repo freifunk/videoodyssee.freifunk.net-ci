@@ -19,12 +19,12 @@
       (alias "Fix Metadata"
              (run fix-metadata))
       (in-parallel
-       (alias "Encode WBEM"
-              (run encode-wbem))
        (alias "Encode H264"
               (run encode-h264))
        (alias "Create thumbnails"
-              (run create-thumbnail-images)))))
+              (run create-thumbnail-images)))
+       (alias "Encode WBEM"
+              (run encode-wbem))))
 
     (alias
      "Publishing Video"
