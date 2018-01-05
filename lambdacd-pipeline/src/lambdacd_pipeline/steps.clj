@@ -17,6 +17,27 @@
 
 (def video-base-path "/srv/videoodyssee/")
 
+(defn publish-format [args ctx format length filename]
+  (let [cwd (:cwd args)]
+    @(httpclient/post (str api-url "/api/recordings")
+      {:body (json/json-str {
+                              :api_key api-key,
+                              :guid (utils/get-uuid args),
+                              :recording {
+                                           :filename (str (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) "." format),
+                                           :folder (utils/get-uuid args),
+                                           :mime_type (str "video/" format),
+                                           :language (utils/get-param args "language"),
+                                           :size (utils/file-size-in-mb filename),
+                                           :length length,
+                                           :width (utils/ffmpeg-get-width cwd ctx filename),
+                                           :height (utils/ffmpeg-get-height cwd ctx filename)
+                                           }
+                              } :escape-slash false )
+       :headers {"Content-Type" "application/json"}})
+    )
+  )
+
 ;;
 ;; Steps
 ;;
@@ -69,7 +90,7 @@
     (shell/bash ctx cwd "exit 0")
     ))
 
-(defn publish-to-voctoweb [args ctx]
+(defn publish-event [args ctx]
   (let [cwd (:cwd args)]
 
     (log/info "publish to voctoweb")
@@ -94,37 +115,27 @@
                                       :release_date (utils/get-param args "releaseDate"),
                                       :original_language (utils/get-param args "language")
                              }} :escape-slash false)
-      :headers {"Content-Type" "application/json"}}
-                     ))
-
-    (log/info created-event)
+      :headers {"Content-Type" "application/json"}}))
 
     (if (>= (get created-event :status) 300)
       {:status :failure :out (str "Result create event - Status:"(get created-event :status) ", " (get created-event :body))}
-      (doseq [format ["mp4" "webm"]]
-        (def filename (str video-path "/processed-video/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) "." format))
-        (def created-recording @(httpclient/post (str api-url "/api/recordings")
-                                 {:body (json/json-str {
-                                                         :api_key api-key,
-                                                         :guid (utils/get-uuid args),
-                                                         :recording {
-                                                                      :filename (str (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) "." format),
-                                                                      :folder (utils/get-uuid args),
-                                                                      :mime_type (str "video/" format),
-                                                                      :language (utils/get-param args "language"),
-                                                                      :size (utils/file-size-in-mb filename),
-                                                                      :length (utils/ffmpeg-get-length cwd ctx filename),
-                                                                      :width (utils/ffmpeg-get-width cwd ctx filename),
-                                                                      :height (utils/ffmpeg-get-height cwd ctx filename)
-                                                                      }
-                                                         } :escape-slash false )
-                                  :headers {"Content-Type" "application/json"}}))
-        (conj recordings {(keyword format) created-recording})
-        (log/info created-recording)
-        )
+      {:status :success}
       )
-    (log/info (str recordings))
-    {:status :success}))
+    ))
+
+(defn publish-recordings [args ctx]
+  (let [cwd (:cwd args)]
+    (def length (utils/ffmpeg-get-length cwd ctx (str video-path "/processed-video/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) ".mp4")))
+    (def filename (str video-path "/processed-video/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) ".webm"))
+    (def webm-result (publish-format args ctx "webm" length filename))
+    (def mp4-result (publish-format args ctx "mp4" length filename))
+    (if (and (< (get webm-result :status) 300) (< (get mp4-result :status) 300) )
+      {:status :success}
+      {:status :failure :out (str "Result create webm - Status:"(get webm-result :status) ", " (get webm-result :body)
+                                  "\\ņResult create mp4 - Status:"(get mp4-result :status) ", " (get mp4-result :body))}
+      )
+
+  ))
 
 (defn publish-to-socialmedia [args ctx]
   (let [cwd (:cwd args)]

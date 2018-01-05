@@ -36,10 +36,10 @@
               (run upload-to-cdn))
        (alias "Upload to YouTube"
               (run upload-to-youtube)))
-      (in-parallel
-       (alias "Publish to VocToWeb"
-              (run publish-to-voctoweb))
+       (alias "Publish VocToWeb"
+              (run publish-event
+                               publish-recordings))
        (alias "Publish to Social Media"
-              (run publish-to-socialmedia)))
-      (alias "Cleanup processed files"
+              (run publish-to-socialmedia))
+       (alias "Cleanup processed files"
              (run cleanup))))))
