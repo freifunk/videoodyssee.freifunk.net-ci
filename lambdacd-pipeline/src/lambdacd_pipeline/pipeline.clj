@@ -25,6 +25,7 @@
               (run create-thumbnail-images)))
        (alias "Encode WBEM"
               (run encode-wbem))))
+    (alias "send mail to admins" send-message-to-admins)
 
     (alias
      "Publishing Video"

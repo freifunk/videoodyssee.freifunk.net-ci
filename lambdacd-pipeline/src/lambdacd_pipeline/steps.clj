@@ -6,6 +6,7 @@
    [clojure.java.io :as io]
    [org.httpkit.client :as httpclient]
    [outpace.config :refer [defconfig]]
+   [postal.core :as mail]
    [clojure.tools.logging :as log])
   )
 
@@ -13,7 +14,8 @@
 (defconfig ^:required cdn-url "rsync://yourpersonalexample.net:/module")
 (defconfig ^:required api-url "https://your-api-url")
 (defconfig ^:required api-key "your-api-key")
-
+(defconfig ^:required admin-recipients "admin-email-address")
+(defconfig ^:required sender-address "sender@example.org")
 
 (def video-base-path "/srv/videoodyssee/")
 
@@ -72,6 +74,18 @@
                      \"(utils/get-param args "videoFilePath")\" " "
                      video-path "/processed-video "
                      (utils/get-param args "title")))))
+
+(defn send-message-to-admins [args ctx]
+  (mail/send-message {
+                       :from sender-address
+                       :to admin-recipients
+                       :subject "New video ready to be published"
+                       :body (str "Hi! There's a new video waiting to be published. "
+                            "The title is " (utils/get-param args "title") "."
+                                  "Submitted by " (utils/get-param args "name ") " email: " (utils/get-param args "email"))
+                       })
+  {:status :success}
+  )
 
 (defn upload-to-cdn [args ctx]
   (let [cwd (:cwd args)]
@@ -132,7 +146,7 @@
     (if (and (< (get webm-result :status) 300) (< (get mp4-result :status) 300) )
       {:status :success}
       {:status :failure :out (str "Result create webm - Status:"(get webm-result :status) ", " (get webm-result :body)
-                                  "\\ņResult create mp4 - Status:"(get mp4-result :status) ", " (get mp4-result :body))}
+                                  " ---- Result create mp4 - Status:"(get mp4-result :status) ", " (get mp4-result :body))}
       )
 
   ))

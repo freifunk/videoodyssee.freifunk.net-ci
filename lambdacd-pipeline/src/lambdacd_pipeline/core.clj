@@ -43,7 +43,7 @@
                      :persist-the-output-of-running-steps false
                      :use-readable-build-numbers true}
 
-        config      {:mongodb-cfg mongodb-cfg
+        config      {;;:mongodb-cfg mongodb-cfg
                      :home-dir    home-dir
                      :name        "Freifunk - Video Odyssee"
 

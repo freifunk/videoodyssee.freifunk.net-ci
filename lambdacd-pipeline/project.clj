@@ -1,5 +1,5 @@
-(defproject lambdacd-pipeline "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
+(defproject lambdacd-pipeline "1.0.0-SNAPSHOT"
+  :description "A pipeline to process videos and publish them to our media portal"
 
   :url "http://example.com/FIXME"
 
@@ -18,6 +18,7 @@
                  [com.outpace/config "0.10.0"]
                  [webjure/json-schema "0.7.4"]
                  [crypto-password "0.2.0"]
+                 [com.draines/postal "2.0.2"]
                  [org.clojure/data.json "0.2.6"]]
 
   :exclusions [org.slf4j/slf4j-simple]
