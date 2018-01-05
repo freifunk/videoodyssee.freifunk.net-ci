@@ -2,7 +2,7 @@
 Description=LambdaCD Pipeline
 
 [Service]
-ExecStart=/usr/bin/java -jar /opt/pipeline/pipeline-0-standalone.jar
+ExecStart=/usr/bin/java -jar /opt/pipeline/pipeline-1-standalone.jar
 StandardOutput=journal
 User=collins
 WorkingDirectory=/opt/pipeline

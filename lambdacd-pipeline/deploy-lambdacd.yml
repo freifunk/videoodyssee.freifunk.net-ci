@@ -17,7 +17,7 @@
         - processed-videos
 
     - name: ensure that the initial pipeline is present
-      copy: src=target/lambdacd-pipeline-0.1.0-SNAPSHOT-standalone.jar dest=/opt/pipeline/pipeline-0-standalone.jar
+      copy: src=target/lambdacd-pipeline-1.0.0-SNAPSHOT-standalone.jar dest=/opt/pipeline/pipeline-1-standalone.jar
 
     - name: ensure that upstart configuration is present
       copy: src=lambdacd.service dest=/lib/systemd/system/lambdacd.service mode=755
