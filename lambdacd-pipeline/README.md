@@ -47,3 +47,8 @@ im Detail:
 * Im Arbeitsverzeichnis eine Passwortdatei anlegen: ```htpasswd -cB videoodyssee.user <username>```
 * Weitere Benutzer hinzufügen ```htpasswd -B videoodyssee.user <username>```
 * Wenn die Datei nicht existiert: User: ```admin```, Password: ```admin``` 
+
+### Youtube
+
+* Man muss seinen Videokanal mit API-Zugang ausstatten: https://developers.google.com/youtube/v3/guides/uploading_a_video
+* in /opt/pipeline wird die Datei client_secrets.json erwartet

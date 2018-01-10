@@ -32,8 +32,8 @@
                                            :language (utils/get-param args "language"),
                                            :size (utils/file-size-in-mb filename),
                                            :length length,
-                                           :width (utils/ffmpeg-get-width cwd ctx filename),
-                                           :height (utils/ffmpeg-get-height cwd ctx filename)
+                                           :width (utils/ffmpeg-get-width cwd ctx (str filename "." format)),
+                                           :height (utils/ffmpeg-get-height cwd ctx (str filename "." format))
                                            }
                               } :escape-slash false )
        :headers {"Content-Type" "application/json"}})
@@ -112,7 +112,13 @@
   (let [cwd (:cwd args)]
 
     (log/info "upload to youtube")
-    (shell/bash ctx cwd "exit 0")
+    (shell/bash ctx scripts-path (str "python2 scripts/upload_video_to_youtube.py"
+                                      "--file \"" (def filename (str video-path "/processed-video/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) ".mp4\" "))
+                                      "--title \"" (utils/get-param args "title") "\" "
+                                      "--description \"" (utils/get-param args "description") "\" "
+                                      "--keywords \"" (clojure.string/join ","(utils/get-param args "tags")) "\" "
+                                      "--category \"27\" " ;; Education
+                                      "--privacyStatus \"private\""))
     ))
 
 (defn publish-event [args ctx]
@@ -151,7 +157,7 @@
 (defn publish-recordings [args ctx]
   (let [cwd (:cwd args)]
     (def length (utils/ffmpeg-get-length cwd ctx (str video-path "/processed-video/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) ".mp4")))
-    (def filename (str video-path "/processed-video/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) ".webm"))
+    (def filename (str video-path "/processed-video/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath"))))
     (def webm-result (publish-format args ctx "webm" length filename))
     (def mp4-result (publish-format args ctx "mp4" length filename))
     (if (and (< (get webm-result :status) 300) (< (get mp4-result :status) 300) )
