@@ -30,7 +30,7 @@
                                            :folder (utils/get-uuid args),
                                            :mime_type (str "video/" format),
                                            :language (utils/get-param args "language"),
-                                           :size (utils/file-size-in-mb filename),
+                                           :size (utils/file-size-in-mb (str filename "." format)),
                                            :length length,
                                            :width (utils/ffmpeg-get-width cwd ctx (str filename "." format)),
                                            :height (utils/ffmpeg-get-height cwd ctx (str filename "." format))
