@@ -11,4 +11,4 @@ ffmpeg -v warning -i "${SOURCE}/${TARGET_BASE}.mp4" -vf yadif \
   -c:a libfdk_aac -b:a 128k -metadata title="'${TITLE}'" \
     -metadata album="<album>" \
     -metadata copyright="Licensed to the public under http://creativecommons.org/licenses/by-sa/3.0/" \
-    -f mp4 -movflags faststart "${TARGET}/${TARGET_BASE}.mp4"
+    -f mp4 -movflags faststart -y "${TARGET}/${TARGET_BASE}.mp4"

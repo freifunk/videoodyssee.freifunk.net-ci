@@ -12,11 +12,13 @@ ffmpeg -analyzeduration 40000000 -probesize 100000000 -i "${SOURCE}/${TARGET_BAS
   -minrate:0 100k -maxrate:0 5000k \
   -pass 1 -passlogfile  "$PASSLOG" \
   -c:a  libvorbis -b:a 96k  -ac:a 2  -ar:a 48000  -metadata:s:a language=de \
-    -f webm /dev/null
+    -f webm -y /dev/null
 fi
 
 ffmpeg -y -analyzeduration  40000000  -probesize  100000000  -i "${SOURCE}/${TARGET_BASE}.mp4" \
-  -c:v  libvpx -threads 16  -pass  2  -passlogfile  "$PASSLOG" \
+  -c:v  libvpx -threads 16  -pass 2  -passlogfile  "$PASSLOG" \
   -g  120  -b:v  1200k  -qmin  11  -qmax  51  -minrate  100k  -maxrate  5000k \
   -c:a  libvorbis  -b:a  96k  -ac:a 2  -ar:a 48000  \
-  -f  webm "${TARGET}/${TARGET_BASE}.webm"
+  -f  webm -y "${TARGET}/${TARGET_BASE}.webm"
+
+rm "${PASSLOG}"
