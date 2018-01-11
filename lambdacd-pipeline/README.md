@@ -52,3 +52,4 @@ im Detail:
 
 * Man muss seinen Videokanal mit API-Zugang ausstatten: https://developers.google.com/youtube/v3/guides/uploading_a_video
 * in /opt/pipeline wird die Datei client_secrets.json erwartet
+* Das Uploadscript muss auf dem Server einmalig ausgeführt werden, um einen Requesttoken zu bekommen. Dieser wird dann im Filesystem gespeichert. Damit sind dann automatische Uploads möglich. Das muss ggf. wiederholt werden, wenn der Token abgelaufen ist. Der Pipelinenutzer muss die Datei lesen können.

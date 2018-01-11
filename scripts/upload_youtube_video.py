@@ -68,7 +68,7 @@ https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
                                    CLIENT_SECRETS_FILE))
 
 VALID_PRIVACY_STATUSES = ("public", "private", "unlisted")
-
+VALID_LICENSES = ("creativeCommon", "youtube")
 
 def get_authenticated_service(args):
   flow = flow_from_clientsecrets(CLIENT_SECRETS_FILE,
@@ -97,7 +97,8 @@ def initialize_upload(youtube, options):
       categoryId=options.category
     ),
     status=dict(
-      privacyStatus=options.privacyStatus
+      privacyStatus=options.privacyStatus,
+      license=options.license
     )
   )
 
@@ -167,6 +168,8 @@ if __name__ == '__main__':
     default="")
   argparser.add_argument("--privacyStatus", choices=VALID_PRIVACY_STATUSES,
     default=VALID_PRIVACY_STATUSES[0], help="Video privacy status.")
+  argparser.add_argument("--license", choices=VALID_LICENSES,
+                         default=VALID_LICENSES[0], help="Video license.")
   args = argparser.parse_args()
 
   if not os.path.exists(args.file):

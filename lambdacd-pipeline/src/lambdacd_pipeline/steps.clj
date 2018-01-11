@@ -110,10 +110,10 @@
 
 (defn upload-to-youtube [args ctx]
   (let [cwd (:cwd args)]
-
+    (def video-path (str video-base-path (utils/get-uuid args)))
     (log/info "upload to youtube")
-    (shell/bash ctx scripts-path (str "python2 scripts/upload_video_to_youtube.py"
-                                      "--file \"" (def filename (str video-path "/processed-video/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) ".mp4\" "))
+    (shell/bash ctx scripts-path (str "python2 scripts/upload_youtube_video.py "
+                                      "--file \"" video-path "/processed-video/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) ".mp4\" "
                                       "--title \"" (utils/get-param args "title") "\" "
                                       "--description \"" (utils/get-param args "description") "\" "
                                       "--keywords \"" (clojure.string/join ","(utils/get-param args "tags")) "\" "
