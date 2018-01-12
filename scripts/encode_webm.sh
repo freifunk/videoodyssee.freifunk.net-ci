@@ -21,4 +21,4 @@ ffmpeg -y -analyzeduration  40000000  -probesize  100000000  -i "${SOURCE}/${TAR
   -c:a  libvorbis  -b:a  96k  -ac:a 2  -ar:a 48000  \
   -f  webm -y "${TARGET}/${TARGET_BASE}.webm"
 
-rm "${PASSLOG}"
+rm "${PASSLOG}*"
