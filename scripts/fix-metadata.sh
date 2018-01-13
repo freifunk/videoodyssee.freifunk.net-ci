@@ -2,7 +2,7 @@
 
 INPUTFILE=$1
 OUTPUTPATH=$2
-=$(basename "${INPUTFILE%.*}.mp4")
+OUTPUTFILE=$(basename "${INPUTFILE%.*}.mp4")
 
 ffmpeg -i "${INPUTFILE}" \
   -map_metadata 0 \
