@@ -3,6 +3,7 @@
 ## Dependencies
 
 * leiningen installieren (https://leiningen.org)
+* add ```{:user {:plugins [[lein-ancient "0.6.15"]]}}``` to ```~/.lein/profiles.clj``` to support dependencies checks
 * der CI Server verwendet MongoDB für die Persistenz der Buildhistory
 * zum lokalen Testen kann MongoDB in Docker gestartet werden: `docker run --name some-mongo -p 27017:27017 -d mongo`
 
