@@ -3,8 +3,8 @@
 
   :url "http://example.com/FIXME"
 
-  :dependencies [[lambdacd "0.13.2"]
-                 [lambdaui "0.4.0"]
+  :dependencies [[lambdacd "0.13.5"]
+                 [lambdaui "1.0.0"]
                  [http-kit "2.2.0"]
                  [org.clojure/clojure "1.8.0"]
                  [org.clojure/tools.logging "0.3.1"]
