@@ -30,6 +30,7 @@
         referenceui-app (reference-ui/ui-for pipeline)]
     (routes
      (api/api pipeline)
+               (api/api-buildnumbers pipeline)
      (GET "/status" [] (status/status))
      (wrap-basic-authentication (ui-routes-protected pipeline) auth/is-valid-user?)
      )))

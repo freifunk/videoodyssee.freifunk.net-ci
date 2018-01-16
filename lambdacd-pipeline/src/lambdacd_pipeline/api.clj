@@ -32,14 +32,14 @@
 
 (defn pipeline-structure [pipeline build-number]
   (let [ctx (:context pipeline)
-        pipeline-structure (state/get-build-metadata  ctx build-number)]
+        pipeline-structure (state/get-pipeline-structure  ctx build-number)]
     (json/write-str {:pipeline-structure pipeline-structure
                      :build-number build-number})))
 
 (defn latest-pipeline-structure [pipeline]
   (let [ctx (:context pipeline)
         current-build (unchecked-subtract (state/next-build-number ctx) 1)
-        pipeline-structure (state/get-build-metadata  ctx current-build)]
+        pipeline-structure (state/get-pipeline-structure  ctx current-build)]
     (json/write-str {:pipeline-structure pipeline-structure
                      :build-number current-build})))
 
@@ -119,5 +119,17 @@
            {:status  200
             :headers {"Content-Type" "application/json"}
             :body    ((resolve (symbol "lambdacd-pipeline.api"endpoint)) pipeline)
+            }))))
+
+(defn api-buildnumbers [pipeline]
+  (GET "/rest-api/:endpoint/:buildnumber" [endpoint buildnumber]
+       (log/info (str "api function '" endpoint "' called for build " buildnumber))
+       (if (and (not (number? buildnumber)) (nil? (resolve (symbol "lambdacd-pipeline.api" endpoint))))
+         (fn [& _]
+           {:status 404})
+         (fn [& _]
+           {:status  200
+            :headers {"Content-Type" "application/json"}
+            :body    ((resolve (symbol "lambdacd-pipeline.api"endpoint)) pipeline (Integer/parseInt buildnumber))
             }))))
 
