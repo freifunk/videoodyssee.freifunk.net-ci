@@ -1,4 +1,4 @@
-# CI pipeline für price-range-service
+# CI pipeline für freifunk video uploader
 
 ## Dependencies
 
