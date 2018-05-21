@@ -7,6 +7,9 @@
     - name: ensure that there is a folder to install the pipeline in
       file: path=/opt/pipeline state=directory
 
+    - name: ensure that there is a folder to install the pipeline in
+      file: path=/var/lib/pipeline state=directory owner=collins
+
     - name: cleanup processing directory
       file: path=/srv/videoodyssee state=absent
 

@@ -5,49 +5,30 @@
     [lambdacd-pipeline.auth :as auth]
     [lambdacd-pipeline.ui-selection :as ui-selection]
     [org.httpkit.server :as http-kit]
-    [lambdacd-mongodb.mongodb-state :as mongodb-state]
     [lambdacd.runners :as runners]
-    [lambdacd.util :as util]
     [ring.middleware.basic-authentication :refer [wrap-basic-authentication]]
     [ring.server.standalone :as ring-server]
     [lambdacd.core :as lambdacd]
-    [lambdacd.ui.ui-server :as ui]
     [clojure.tools.logging :as log]
     [clojure.java.io :as io]
     [clojure.string :as str]
     [outpace.config :refer [defconfig]])
   (:gen-class))
 
-(defconfig ^:required mongodb-user "user")
-(defconfig ^:required mongodb-password "secret")
-(defconfig ^:required mongodb-host "mongodb://localhost:27017/lambdacd")
+(defconfig ^:required home-dir "~/")
 
 (defn -main [& args]
   (let [pipeline    pipeline/pipeline-def
 
         ;; the home dir is where LambdaCD saves all data.
         ;; point this to a particular directory to keep builds around after restarting
-        home-dir    (util/create-temp-dir)
 
-        mongodb-cfg {:user         mongodb-user
-                     :uri          mongodb-host
-                     :password     mongodb-password
-                     :hosts        ["localhost"]
-                     :port         27017
-                     :db           "lambdacd"
-                     :col          "videoodyssee"
-                     :max-builds   10
-                     :ttl          10
-                     :mark-running-steps-as :killed
-                     :pipeline-def pipeline
-                     :persist-the-output-of-running-steps false
-                     :use-readable-build-numbers true}
-
-        config      {:mongodb-cfg mongodb-cfg
-                     :home-dir    home-dir
+        config      {:home-dir    home-dir
                      :name        "Freifunk - Video Odyssee"
 
                      :ui-config   {:expand-active-default   true
+
+                                   :theme                   "dark"
 
                                    :expand-failures-default true
 
@@ -55,7 +36,7 @@
                                                                       :text "Github Repo"}]}}}
 
         ;; initialize and wire everything together
-        pipeline    (lambdacd.core/assemble-pipeline pipeline config (mongodb-state/new-mongodb-state config))
+        pipeline    (lambdacd.core/assemble-pipeline pipeline config )
 
         ;; create a Ring handler for the UI
         app          (ui-selection/ui-routes pipeline)]

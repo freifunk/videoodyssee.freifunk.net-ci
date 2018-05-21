@@ -2,11 +2,7 @@
 
 ;; CONFIG ENTRIES:
 
-#_lambdacd-pipeline.core/mongodb-host #_"mongodb://localhost:27017/lambdacd"
-
-#_lambdacd-pipeline.core/mongodb-password #_"secret"
-
-#_lambdacd-pipeline.core/mongodb-user #_"user"
+#_lambdacd-pipeline.core/home-dir #_"~/"
 
 #_lambdacd-pipeline.steps/admin-recipients #_"admin-email-address"
 

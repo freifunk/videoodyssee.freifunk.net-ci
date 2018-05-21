@@ -1,7 +1,7 @@
 (ns lambdacd-pipeline.pipeline
-  (:use [lambdacd.steps.control-flow]
-        [lambdacd-pipeline.steps])
+  (:use [lambdacd-pipeline.steps])
   (:require
+    [lambdacd.steps.control-flow :refer :all]
     [lambdacd.steps.manualtrigger :as manualtrigger]
     [lambdacd-pipeline.trigger :as trigger])
   (:refer-clojure :exclude
