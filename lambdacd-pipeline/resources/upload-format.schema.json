@@ -4,6 +4,9 @@
   "$id": "http://example.com/example.json",
   "type": "object",
   "properties": {
+    "uuid": {
+      "type": "string"
+    },
     "name": {
       "type": "string"
     },
