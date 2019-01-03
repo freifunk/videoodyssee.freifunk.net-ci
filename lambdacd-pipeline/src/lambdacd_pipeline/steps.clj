@@ -27,7 +27,7 @@
                               :guid (utils/get-uuid args),
                               :recording {
                                            :filename (str (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) "." format),
-                                           :folder (utils/get-uuid args),
+                                           :folder (str (utils/get-param args "conferenceAcronym") "/" (utils/get-uuid args)),
                                            :mime_type (str "video/" format),
                                            :language (utils/get-param args "language"),
                                            :size (utils/file-size-in-mb (str filename "." format)),
@@ -135,8 +135,8 @@
                              :api_key api-key,
                              :acronym (utils/get-param args "conferenceAcronym"),
                              :event {
-                                      :poster_filename (str (utils/get-uuid args)"/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) "_preview.jpg"),
-                                      :thumb_filename (str (utils/get-uuid args)"/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) "_thumb.jpg"),
+                                      :poster_filename (str (utils/get-param args "conferenceAcronym") "/" (utils/get-uuid args)"/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) "_preview.jpg"),
+                                      :thumb_filename (str (utils/get-param args "conferenceAcronym") "/" (utils/get-uuid args)"/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) "_thumb.jpg"),
                                       :guid (utils/get-uuid args),
                                       :slug (utils/get-param args "slug"),
                                       :title (utils/get-param args "title"),
