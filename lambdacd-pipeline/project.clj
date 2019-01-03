@@ -3,10 +3,10 @@
 
   :url "http://example.com/FIXME"
 
-  :dependencies [[lambdacd "0.14.0"]
+  :dependencies [[lambdacd "0.14.3"]
                  [lambdaui "1.1.0"]
                  [http-kit "2.3.0"]
-                 [org.clojure/clojure "1.9.0"]
+                 [org.clojure/clojure "1.10.0"]
                  [org.clojure/tools.logging "0.4.1"]
                  [org.slf4j/slf4j-api "1.7.25"]
                  [ch.qos.logback/logback-core "1.2.3"]
@@ -15,10 +15,10 @@
                  [lambdacd-cctray "0.5.0"]
                  [ring-basic-authentication "1.0.5"]
                  [proto-repl "0.3.1"]
-                 [com.outpace/config "0.11.0"]
+                 [com.outpace/config "0.13.0"]
                  [webjure/json-schema "0.7.4"]
                  [crypto-password "0.2.0"]
-                 [com.draines/postal "2.0.2"]
+                 [com.draines/postal "2.0.3"]
                  [org.clojure/data.json "0.2.6"]]
 
   :exclusions [org.slf4j/slf4j-simple]
