@@ -3,5 +3,6 @@
 VIDEO_DIR=$1
 URL=$2
 UUID=$3
+CONFERENCE=$4
 
-rsync -a ${VIDEO_DIR}/processed-video/ ${URL}/${UUID}
+rsync -a ${VIDEO_DIR}/processed-video/ ${URL}/${CONFERENCE}/${UUID}

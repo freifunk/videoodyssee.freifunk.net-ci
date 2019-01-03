@@ -102,10 +102,13 @@
   (let [cwd (:cwd args)]
 
     (def video-path (str video-base-path (utils/get-uuid args)))
-    (shell/bash ctx scripts-path
+    (def conferenceAcronym (utils/get-param args "conferenceAcronym"))
+
+       (shell/bash ctx scripts-path
                 (str "sh scripts/upload_video_to_cdn.sh " video-path " "
                      cdn-url " "
-                     (utils/get-uuid args)))
+                     (utils/get-uuid args) " "
+                     conferenceAcronym))
     ))
 
 (defn upload-to-youtube [args ctx]
