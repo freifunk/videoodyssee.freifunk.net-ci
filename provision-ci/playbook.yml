@@ -5,17 +5,10 @@
 
   vars:
     required_ansible_version: 2.3
-    manala_apt_preferences:
-      - node-mongo-express@manala
-    manala_mongo_express_config_template: config/mongo-express-freifunk.js
-
     nodejs_install_npm_user: root
 
   roles:
     - role: check-preconditions
     - role: install-java
-    - role: install-mongodb
     - role: install-ansible
     - role: geerlingguy.nodejs
-    - role: manala.apt
-    - role: manala.mongo-express
