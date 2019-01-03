@@ -137,6 +137,8 @@
                              :event {
                                       :poster_filename (str (utils/get-param args "conferenceAcronym") "/" (utils/get-uuid args)"/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) "_preview.jpg"),
                                       :thumb_filename (str (utils/get-param args "conferenceAcronym") "/" (utils/get-uuid args)"/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) "_thumb.jpg"),
+                                      :timeline_filename (str (utils/get-param args "conferenceAcronym") "/" (utils/get-uuid args)"/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) ".timeline.jpg"),
+                                      :thumbnails_filename (str (utils/get-param args "conferenceAcronym") "/" (utils/get-uuid args)"/" (utils/get-basename-without-extension (utils/get-param args "videoFilePath")) ".vtt"),
                                       :guid (utils/get-uuid args),
                                       :slug (utils/get-param args "slug"),
                                       :title (utils/get-param args "title"),
@@ -189,6 +191,18 @@
                     \"(utils/get-param args "videoFilePath")\" " "
                     video-path "/processed-video"))
     ))
+
+(defn create-timelense-data [args ctx]
+      (let [cwd (:cwd args)]
+           (log/info "create timelens data")
+           (def video-path (str video-base-path (utils/get-uuid args)))
+           (shell/bash ctx cwd (str "mkdir -p " video-path "/processed-video/"))
+           (shell/bash ctx scripts-path
+                       (str"sh scripts/create_timelens_data.sh " video-path "/fixed-metadata "
+                           \"(utils/get-param args "videoFilePath")\" " "
+                           video-path "/processed-video"))
+           )
+  )
 
 (defn cleanup [args ctx]
   (let [cwd (:cwd args)]
