@@ -38,7 +38,12 @@
 
 (defn get-param [args key] (get (external-trigger-params args) key))
 
-(defn get-uuid [args] (get (get args :global) "uuid"))
+(defn get-uuid [args]
+      (if (nil? (get-param args "uuid"))
+        (get (get args :global) "uuid")
+        (get-param args "uuid")
+        )
+      )
 
 (def upload-schema (io/resource
                 "upload-format.schema.json" ))
