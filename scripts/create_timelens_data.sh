@@ -4,6 +4,6 @@ INPUTFILE=$1
 OUTPUTPATH=$2
 OUTPUTFILE=$(basename "${INPUTFILE%.*}")
 
-timelense "${INPUTFILE}" \
+timelens "${INPUTFILE}" \
   --timeline "${OUTPUTPATH}/${OUTPUTFILE}.timeline.jpg"\
   --thumbnails "${OUTPUTPATH}/${OUTPUTFILE}.vtt"

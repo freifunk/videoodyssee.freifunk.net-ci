@@ -192,7 +192,7 @@
                     video-path "/processed-video"))
     ))
 
-(defn create-timelense-data [args ctx]
+(defn create-timelens-data [args ctx]
       (let [cwd (:cwd args)]
            (log/info "create timelens data")
            (def video-path (str video-base-path (utils/get-uuid args)))

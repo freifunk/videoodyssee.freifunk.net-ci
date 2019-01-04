@@ -23,8 +23,8 @@
               (run encode-h264))
        (alias "Create thumbnails"
               (run create-thumbnail-images))
-       (alias "Create timelense data"
-              (run create-timelense-data)))
+       (alias "Create timelens data"
+              (run create-timelens-data)))
        (alias "Encode WBEM"
               (run encode-wbem))))
     (alias "send mail to admins" send-message-to-admins)
