@@ -32,8 +32,9 @@
     (alias
      "Publishing Video"
      (with-workspace
-      (alias "Confirm publishing"
-             manualtrigger/wait-for-manual-trigger)
+       (alias "Confirm publishing"
+              ;;manualtrigger/wait-for-manual-trigger
+              )
       (in-parallel
         (alias "Upload to CDN"
                (run upload-to-cdn))
