@@ -35,10 +35,11 @@
       (alias "Confirm publishing"
              manualtrigger/wait-for-manual-trigger)
       (in-parallel
-       (alias "Upload to CDN"
-              (run upload-to-cdn))
-       (alias "Upload to YouTube"
-              (run upload-to-youtube)))
+        (alias "Upload to CDN"
+               (run upload-to-cdn))
+        (alias "Upload to YouTube"
+               ;;     (run upload-to-youtube)
+               ))
        (alias "Publish VocToWeb"
               (run publish-event
                                publish-recordings))
