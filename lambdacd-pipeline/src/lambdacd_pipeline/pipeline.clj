@@ -35,6 +35,8 @@
       (in-parallel
         (alias "Upload to CDN"
                (run upload-to-cdn))
+        (alias "Upload to YouTube"
+               (run upload-to-youtube))
         )
        (alias "Publish VocToWeb"
               (run publish-event
