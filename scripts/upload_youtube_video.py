@@ -14,6 +14,7 @@ from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from oauth2client.tools import argparser, run_flow
 
+
 # Explicitly tell the underlying HTTP transport library not to retry, since
 # we are handling retry logic ourselves.
 httplib2.RETRIES = 1
@@ -23,9 +24,9 @@ MAX_RETRIES = 10
 
 # Always retry when these exceptions are raised.
 RETRIABLE_EXCEPTIONS = (httplib2.HttpLib2Error, IOError, httplib.NotConnected,
-  httplib.IncompleteRead, httplib.ImproperConnectionState,
-  httplib.CannotSendRequest, httplib.CannotSendHeader,
-  httplib.ResponseNotReady, httplib.BadStatusLine)
+                        httplib.IncompleteRead, httplib.ImproperConnectionState,
+                        httplib.CannotSendRequest, httplib.CannotSendHeader,
+                        httplib.ResponseNotReady, httplib.BadStatusLine)
 
 # Always retry when an apiclient.errors.HttpError with one of these status
 # codes is raised.
@@ -68,12 +69,12 @@ https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
                                    CLIENT_SECRETS_FILE))
 
 VALID_PRIVACY_STATUSES = ("public", "private", "unlisted")
-VALID_LICENSES = ("creativeCommon", "youtube")
+
 
 def get_authenticated_service(args):
   flow = flow_from_clientsecrets(CLIENT_SECRETS_FILE,
-    scope=YOUTUBE_UPLOAD_SCOPE,
-    message=MISSING_CLIENT_SECRETS_MESSAGE)
+                                 scope=YOUTUBE_UPLOAD_SCOPE,
+                                 message=MISSING_CLIENT_SECRETS_MESSAGE)
 
   storage = Storage("%s-oauth2.json" % sys.argv[0])
   credentials = storage.get()
@@ -82,7 +83,7 @@ def get_authenticated_service(args):
     credentials = run_flow(flow, storage, args)
 
   return build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
-    http=credentials.authorize(httplib2.Http()))
+               http=credentials.authorize(httplib2.Http()))
 
 def initialize_upload(youtube, options):
   tags = None
@@ -97,8 +98,7 @@ def initialize_upload(youtube, options):
       categoryId=options.category
     ),
     status=dict(
-      privacyStatus=options.privacyStatus,
-      license=options.license
+      privacyStatus=options.privacyStatus
     )
   )
 
@@ -160,16 +160,14 @@ if __name__ == '__main__':
   argparser.add_argument("--file", required=True, help="Video file to upload")
   argparser.add_argument("--title", help="Video title", default="Test Title")
   argparser.add_argument("--description", help="Video description",
-    default="Test Description")
+                         default="Test Description")
   argparser.add_argument("--category", default="22",
-    help="Numeric video category. " +
-      "See https://developers.google.com/youtube/v3/docs/videoCategories/list")
+                         help="Numeric video category. " +
+                              "See https://developers.google.com/youtube/v3/docs/videoCategories/list")
   argparser.add_argument("--keywords", help="Video keywords, comma separated",
-    default="")
+                         default="")
   argparser.add_argument("--privacyStatus", choices=VALID_PRIVACY_STATUSES,
-    default=VALID_PRIVACY_STATUSES[0], help="Video privacy status.")
-  argparser.add_argument("--license", choices=VALID_LICENSES,
-                         default=VALID_LICENSES[0], help="Video license.")
+                         default=VALID_PRIVACY_STATUSES[0], help="Video privacy status.")
   args = argparser.parse_args()
 
   if not os.path.exists(args.file):
@@ -180,4 +178,3 @@ if __name__ == '__main__':
     initialize_upload(youtube, args)
   except HttpError, e:
     print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
-
